@@ -54,7 +54,7 @@ export default function Login() {
                             id='email'
                             name='email'
                             value={user.email}
-                            onChange={(event) => handleInputChange(event, user, setUser)}
+                            onChange={(event) => handleInputChange(event, setUser)}
                             placeholder='이메일을 입력하세요'
                         />
                     </label>
@@ -68,7 +68,7 @@ export default function Login() {
                             id='password'
                             name='password'
                             value={user.password}
-                            onChange={(event) => handleInputChange(event, user, setUser)}
+                            onChange={(event) => handleInputChange(event, setUser)}
                             placeholder='비밀번호를 입력하세요'
                         />
                     </label>
