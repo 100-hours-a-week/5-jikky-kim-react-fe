@@ -26,3 +26,46 @@ body {
     text-align: center;
     font-family: 'Pretendard-Regular', sans-serif;
 }
+
+.page-title {
+    margin-top: 20vh;
+    margin-bottom: 3vh;
+    font-weight: 700;
+    font-size: 32px;
+    text-align: center;
+}
+
+.helper-text {
+    text-align: left;
+    color: red;
+    font-size: 12px;
+    width: var(--input-width);
+}
+
+.label {
+    text-align: left;
+    font-weight: 700;
+    font-size: 15px;
+    margin-top: 8px;
+}
+
+.go {
+    text-align: center;
+    font-size: 14px;
+    margin: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+}
