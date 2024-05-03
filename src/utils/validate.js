@@ -16,8 +16,8 @@ export const validatePassword = (password) => {
 // 닉네임 유효성 검증
 export const validateNickname = (nickname) => {
     // 띄어쓰기가 없는지 확인
-    if (nickname.indexOf(' ') !== -1) return 'spaceError';
+    if (nickname.indexOf(' ') !== -1) return 'NICKNAME_VALIDATION_FALSE_SPACE';
     // 길이가 10글자 이하인지 확인
-    if (nickname.length > 10) return 'lengthError';
+    if (nickname.length > 10) return 'NICKNAME_VALIDATION_FALSE_LENGTH';
     return true;
 };
