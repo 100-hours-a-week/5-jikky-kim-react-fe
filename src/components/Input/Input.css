@@ -1,0 +1,7 @@
+input {
+    height: var(--input-height);
+    width: var(--input-width);
+    border-radius: 4px;
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
