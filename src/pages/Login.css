@@ -1,0 +1,46 @@
+/* login */
+.login-label {
+    text-align: left;
+    margin-top: 8px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+#login-text {
+    margin-top: 20vh;
+    margin-bottom: 3vh;
+    font-weight: 700;
+    font-size: 32px;
+    text-align: center;
+}
+
+#login-box {
+    display: flex;
+    justify-content: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    height: var(--input-height);
+    width: var(--input-width);
+    border-radius: 4px;
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
+
+/* register */
+#register-text {
+    text-align: center;
+    font-size: 14px;
+    margin: 10px;
+}
+
+.helper-text {
+    text-align: left;
+    color: red;
+    font-size: 12px;
+}
