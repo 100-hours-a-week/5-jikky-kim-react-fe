@@ -128,7 +128,7 @@ export default function Register() {
                     </div>
 
                     <div className='flex'>
-                        <img id='preview' alt='profile image' />
+                        <img id='preview' alt='profile' />
                     </div>
                     <Input type='file' name='avatar' id='profile' accept='image/*' onChange={fileInputHandler} />
                     <label htmlFor='email' className='label'>
