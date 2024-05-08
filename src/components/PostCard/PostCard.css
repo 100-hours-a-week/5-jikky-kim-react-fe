@@ -1,0 +1,52 @@
+/* 게시글 */
+.post {
+    background-color: white;
+    border-radius: 0px 8px 8px 8px;
+}
+.post-title {
+    text-align: left;
+    font-weight: 700;
+    font-size: 24px;
+    margin: 12px;
+}
+
+.post-mid {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin: 12px;
+}
+.post-mid-l {
+    display: flex;
+    gap: 12px;
+}
+
+.post-creator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px;
+    font-weight: 700;
+}
+.avatar {
+    width: 36px;
+    height: 36px;
+    background-color: var(--color-primary);
+    border-radius: 100%;
+}
+
+.creator {
+    font-weight: 700px;
+    font-size: 15px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.creator-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+}

@@ -67,13 +67,13 @@ export default function Register() {
         if (
             validateEmail(user.email) &&
             validatePassword(user.password) &&
+            user.password === user.passwordCheck &&
+            user.nickname.length > 0 &&
             validateNickname(user.nickname) === true &&
             user.profile
         ) {
-            console.log('active');
             return activateButton('register-btn');
         }
-        console.log('deactive');
         deactivateButton('register-btn');
     }, [user]);
 
@@ -128,7 +128,7 @@ export default function Register() {
                     </div>
 
                     <div className='flex'>
-                        <img id='preview' />
+                        <img id='preview' alt='profile' />
                     </div>
                     <Input type='file' name='avatar' id='profile' accept='image/*' onChange={fileInputHandler} />
                     <label htmlFor='email' className='label'>
