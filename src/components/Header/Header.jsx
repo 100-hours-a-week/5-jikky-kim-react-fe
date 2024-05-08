@@ -1,6 +1,5 @@
 import './Header.css';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import avatar from '../../assets/image/avatar.jpg';
 
 export default function Header() {
     const NOT_LOGINED_PATH = ['/login', '/register'];
@@ -27,7 +26,7 @@ export default function Header() {
                             아무 말 대잔치
                         </div>
                         <div className='dropdown'>
-                            <img alt='user-avatar' src={avatar} id='profile-btn' className='header-profile drop-btn' />
+                            <img alt='user-avatar' src={''} id='profile-btn' className='header-profile drop-btn' />
                             <nav id='user-nav' className='dropdown-content'>
                                 <Link className='user-nav-item' to='/user/update'>
                                     회원정보 수정
