@@ -1,5 +1,7 @@
 import './Header.css';
+import api from '../../utils/api';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 
 export default function Header() {
     const NOT_LOGINED_PATH = ['/login', '/register'];
@@ -9,12 +11,16 @@ export default function Header() {
         history('/posts');
     };
 
-    // // TODO : 데이터 연결
-    // const insertHeaderAvatar = (userAvatar) => {
-    //     const profileBtn = document.getElementById('profile-btn');
-    //     profileBtn.setAttribute('src', userAvatar);
-    // };
-    // insertHeaderAvatar('/avatar.jpg');
+    const profileImage = useRef();
+    const insertHeaderAvatar = async () => {
+        const data = await api.get('/users/change');
+        profileImage.current.src = data.user.avatar;
+    };
+
+    useEffect(() => {
+        insertHeaderAvatar();
+    }, []);
+
     return (
         <header>
             <div id='header-flex'>
@@ -26,7 +32,12 @@ export default function Header() {
                             아무 말 대잔치
                         </div>
                         <div className='dropdown'>
-                            <img alt='user-avatar' src={''} id='profile-btn' className='header-profile drop-btn' />
+                            <img
+                                alt='user-avatar'
+                                ref={profileImage}
+                                id='profile-btn'
+                                className='header-profile drop-btn'
+                            />
                             <nav id='user-nav' className='dropdown-content'>
                                 <Link className='user-nav-item' to='/user/update'>
                                     회원정보 수정
