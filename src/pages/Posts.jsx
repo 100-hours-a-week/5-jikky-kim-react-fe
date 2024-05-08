@@ -96,9 +96,7 @@ const Posts = () => {
                     </a>
                 </div>
                 <div className='post-list'>
-                    {postList.map((post) => (
-                        <PostCard key={post.post_id} {...post} />
-                    ))}
+                    {postList && postList.map((post) => <PostCard key={post.post_id} {...post} />)}
                 </div>
                 <div id='loading'>
                     <div className='spinner'></div>

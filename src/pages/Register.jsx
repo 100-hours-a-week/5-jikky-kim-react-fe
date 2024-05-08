@@ -9,7 +9,7 @@ import Button from '../components/Button/Button';
 import Input from '../components/Input/Input';
 
 export default function Register() {
-    const history = useNavigate();
+    const navigate = useNavigate();
     // input
     const [user, setUser] = useState({
         profile: '',
@@ -85,8 +85,7 @@ export default function Register() {
             validateNickname(user.nickname) === true &&
             user.profile
         ) {
-            // TODO: FORM 제출
-            history('/login');
+            navigate('/login');
         }
     };
 
