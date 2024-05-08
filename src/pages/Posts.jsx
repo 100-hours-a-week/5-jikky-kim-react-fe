@@ -1,7 +1,7 @@
 import './Posts.css';
 import PostCard from '../components/PostCard/PostCard';
 import api from '../utils/api';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 const Posts = () => {
     const [page, setPage] = useState(1);
@@ -41,21 +41,20 @@ const Posts = () => {
         };
     }, [page, limit]);
 
-    // 무한스크롤 데이터 로딩
-    const loading = {
-        start: () => {
-            // @로딩 시작
-            const loading = document.querySelector('#loading');
-            loading.style.display = 'block';
-        },
-        end: () => {
-            // @로딩 종료
-            const loading = document.querySelector('#loading');
-            loading.style.display = 'none';
-        },
-    };
-
-    useEffect(() => {
+    const infiniteScroll = useCallback(() => {
+        // 무한스크롤 데이터 로딩
+        const loading = {
+            start: () => {
+                // @로딩 시작
+                const loading = document.querySelector('#loading');
+                loading.style.display = 'block';
+            },
+            end: () => {
+                // @로딩 종료
+                const loading = document.querySelector('#loading');
+                loading.style.display = 'none';
+            },
+        };
         const windowScrollHandler = () => {
             if (isFetching || !hasMore) return;
 
@@ -76,7 +75,11 @@ const Posts = () => {
             window.removeEventListener('scroll', windowScrollHandler);
             clearTimeout(timerRef.current);
         };
-    }, []);
+    }, [hasMore, isFetching]);
+
+    useEffect(() => {
+        infiniteScroll();
+    }, [infiniteScroll]);
 
     return (
         <div id='posts'>
