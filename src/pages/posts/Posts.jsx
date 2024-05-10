@@ -3,6 +3,7 @@ import PostCard from '../../components/PostCard/PostCard';
 import api from '../../utils/api';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Info from './Info';
+import Loading from '../../components/Loading/Loading';
 
 const Posts = () => {
     const [page, setPage] = useState(1);
@@ -44,16 +45,15 @@ const Posts = () => {
 
     const infiniteScroll = useCallback(() => {
         // 무한스크롤 데이터 로딩
+        const loadingDiv = document.querySelector('#loading');
         const loading = {
             start: () => {
                 // @로딩 시작
-                const loading = document.querySelector('#loading');
-                loading.style.display = 'block';
+                loadingDiv.style.display = 'block';
             },
             end: () => {
                 // @로딩 종료
-                const loading = document.querySelector('#loading');
-                loading.style.display = 'none';
+                loadingDiv.style.display = 'none';
             },
         };
         const windowScrollHandler = () => {
@@ -96,13 +96,7 @@ const Posts = () => {
                 <div className='post_list'>
                     {postList && postList.map((post) => <PostCard key={post.post_id} {...post} />)}
                 </div>
-                <div id='loading' className={style.loading}>
-                    <div className={style.spinner}></div>
-                </div>
-                <div id='toast-message'></div>
-                <div id='loading'>
-                    <div className='spinner'></div>
-                </div>
+                <Loading />
                 <div id='toast-message' ref={toastMessage}></div>
             </div>
         </div>
