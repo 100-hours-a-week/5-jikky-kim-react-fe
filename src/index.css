@@ -55,6 +55,11 @@ body {
     margin: 10px;
 }
 
+.line {
+    width: 100%;
+    border-top: 1px solid #00000029;
+}
+
 a {
     text-decoration: none;
     color: black;

@@ -1,4 +1,4 @@
-import './Register.css';
+import style from './Register.module.css';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail, validatePassword, validateNickname } from '../utils/validate';
@@ -114,22 +114,31 @@ export default function Register() {
     };
 
     return (
-        <main>
+        <main className={style.main}>
             <div className='page-title'>회원가입</div>
             <div className='flex'>
                 <form id='register-form'>
                     <div className='label'>프로필 사진</div>
                     <div className='helper-text'>{helperText.profileHelper}</div>
                     <div className='flex'>
-                        <label id='image-input' htmlFor='profile'>
-                            <div id='add-icon'>+</div>
+                        <label id='image-input' className={style.image_input} htmlFor='profile'>
+                            <div id='add-icon' className={style.add_icon}>
+                                +
+                            </div>
                         </label>
                     </div>
 
                     <div className='flex'>
-                        <img id='preview' alt='profile-preview' />
+                        <img id='preview' className={style.preview} alt='profile-preview' />
                     </div>
-                    <Input type='file' name='avatar' id='profile' accept='image/*' onChange={fileInputHandler} />
+                    <Input
+                        type='file'
+                        name='avatar'
+                        id='profile'
+                        className={style.profile}
+                        accept='image/*'
+                        onChange={fileInputHandler}
+                    />
                     <label htmlFor='email' className='label'>
                         <div>이메일*</div>
                         <Input

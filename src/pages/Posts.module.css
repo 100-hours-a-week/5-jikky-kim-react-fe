@@ -1,4 +1,4 @@
-#posts {
+.posts {
     text-align: center;
     width: 100%;
     display: flex;
@@ -6,20 +6,20 @@
     margin-bottom: 80px;
 }
 
-#post-wrapper {
+.post_wrapper {
     width: 592px;
 }
 
-#post-info {
+.post_info {
     margin-top: 20px;
 }
 
-.post-info-text {
+.post_info_text {
     font-size: 24px;
 }
 
 /* 버튼 */
-#go-upload {
+.go_upload {
     margin-top: 2vh;
     margin-bottom: 2vh;
     background-color: var(--color-secondary);
@@ -32,22 +32,22 @@
     padding: 0;
     cursor: pointer;
 }
-#go-upload:hover {
+.go_upload:hover {
     background-color: var(--color-active);
 }
 
-#btn-wrapper {
+.btn_wrapper {
     text-align: right;
 }
 
-.post-list {
+.post_list {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
 /* loading */
-#loading {
+.loading {
     display: none;
     position: fixed;
     z-index: 100;

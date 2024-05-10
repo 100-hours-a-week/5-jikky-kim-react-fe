@@ -1,8 +1,12 @@
 import React from 'react';
-import './Button.css';
+import style from './Button.module.css';
 
 function Button({ id, text }) {
-    return <button id={id}>{text}</button>;
+    return (
+        <button className={style.button} id={id}>
+            {text}
+        </button>
+    );
 }
 
 export default Button;

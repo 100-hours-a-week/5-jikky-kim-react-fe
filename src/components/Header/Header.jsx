@@ -1,4 +1,4 @@
-import './Header.css';
+import style from './Header.module.css';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import WithLogin from './WithLogin';
@@ -14,8 +14,8 @@ export default function Header() {
         setIsLoggedIn(true);
     }, []);
     return (
-        <header>
-            <div id='header-flex'>
+        <header className={style.header}>
+            <div id='header-flex' className={style.header_flex}>
                 <WithLogin isLoggedIn={isLoggedIn} />
             </div>
         </header>

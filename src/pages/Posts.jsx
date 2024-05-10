@@ -1,4 +1,4 @@
-import './Posts.css';
+import style from './Posts.module.css';
 import PostCard from '../components/PostCard/PostCard';
 import api from '../utils/api';
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -82,24 +82,26 @@ const Posts = () => {
     }, [infiniteScroll]);
 
     return (
-        <div id='posts'>
-            <div id='post-wrapper'>
-                <div id='post-info'>
-                    <div className='post-info-text'>안녕하세요,</div>
-                    <div className='post-info-text'>
+        <div id='posts' className={style.posts}>
+            <div id='post-wrapper' className={style.post_wrapper}>
+                <div id='post-info' className={style.post_info}>
+                    <div className={style.post_info_text}>안녕하세요,</div>
+                    <div className={style.post_info_text}>
                         아무 말 대잔치 <strong>게시판</strong> 입니다.
                     </div>
                 </div>
-                <div id='btn-wrapper'>
+                <div id='btn-wrapper' className={style.btn_wrapper}>
                     <a href='http://localhost:3000/post/create'>
-                        <button id='go-upload'>게시물 작성</button>
+                        <button id='go-upload' className={style.go_upload}>
+                            게시물 작성
+                        </button>
                     </a>
                 </div>
-                <div className='post-list'>
+                <div className='post_list'>
                     {postList && postList.map((post) => <PostCard key={post.post_id} {...post} />)}
                 </div>
-                <div id='loading'>
-                    <div className='spinner'></div>
+                <div id='loading' className={style.loading}>
+                    <div className={style.spinner}></div>
                 </div>
                 <div id='toast-message'></div>
                 <div id='loading'>

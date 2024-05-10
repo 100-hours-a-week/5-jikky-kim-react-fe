@@ -1,0 +1,29 @@
+/* register input */
+.preview {
+    display: none;
+    width: 149px;
+    height: 149px;
+    border-radius: 100%;
+}
+
+.add_icon {
+    font-size: 60px;
+    font-weight: 300;
+    position: relative;
+    top: 28px;
+}
+
+.image_input {
+    width: 149px;
+    height: 149px;
+    border-radius: 100%;
+    background-color: #c4c4c4;
+}
+
+.profile {
+    display: none;
+}
+
+.main {
+    margin-bottom: 20vh;
+}
