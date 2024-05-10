@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
 
 // page
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Posts from './pages/Posts';
+import Login from './pages/login';
+import Register from './pages/register';
+import Posts from './pages/posts';
 
 function App() {
     return (

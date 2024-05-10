@@ -1,0 +1,39 @@
+.posts {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 80px;
+}
+
+.post_wrapper {
+    width: 592px;
+}
+
+/* 버튼 */
+.go_upload {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    background-color: var(--color-secondary);
+    color: white;
+    width: 138px;
+    height: 39px;
+    font-size: 16px;
+    border-radius: 16px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+}
+.go_upload:hover {
+    background-color: var(--color-active);
+}
+
+.btn_wrapper {
+    text-align: right;
+}
+
+.post_list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}

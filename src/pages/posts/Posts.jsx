@@ -1,12 +1,16 @@
-import './Posts.css';
-import PostCard from '../components/PostCard/PostCard';
-import api from '../utils/api';
+import style from './Posts.module.css';
+import PostCard from '../../components/PostCard/PostCard';
+import api from '../../utils/api';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import Info from './Info';
+import Toast from '../../components/Toast/Toast';
+import Loading from '../../components/Loading/Loading';
 
 const Posts = () => {
     const [page, setPage] = useState(1);
     const [isFetching, setIsFetching] = useState(false);
     const [hasMore, setHasMore] = useState(true);
+    const [active, setActive] = useState('toast');
 
     const toastMessage = useRef();
     const timerRef = useRef(0);
@@ -20,11 +24,10 @@ const Posts = () => {
             setPostList((prev) => [...prev, ...posts]);
             if (posts.length === 0) {
                 setHasMore(false);
-                // toast로 안내
-                toastMessage.current.innerHTML = '더 이상 불러올 게시물이 없습니다.';
-                toastMessage.current.classList.add('active');
+                // toast 렌더링
+                setActive('toast-active');
                 setTimeout(function () {
-                    toastMessage.current.classList.remove('active');
+                    setActive('toast');
                 }, 1000);
             }
             return posts;
@@ -41,18 +44,17 @@ const Posts = () => {
         };
     }, [page, limit]);
 
+    const loadingDiv = useRef();
     const infiniteScroll = useCallback(() => {
         // 무한스크롤 데이터 로딩
         const loading = {
             start: () => {
                 // @로딩 시작
-                const loading = document.querySelector('#loading');
-                loading.style.display = 'block';
+                loadingDiv.current.style.display = 'block';
             },
             end: () => {
                 // @로딩 종료
-                const loading = document.querySelector('#loading');
-                loading.style.display = 'none';
+                loadingDiv.current.style.display = 'none';
             },
         };
         const windowScrollHandler = () => {
@@ -82,32 +84,23 @@ const Posts = () => {
     }, [infiniteScroll]);
 
     return (
-        <div id='posts'>
-            <div id='post-wrapper'>
-                <div id='post-info'>
-                    <div className='post-info-text'>안녕하세요,</div>
-                    <div className='post-info-text'>
-                        아무 말 대잔치 <strong>게시판</strong> 입니다.
-                    </div>
-                </div>
-                <div id='btn-wrapper'>
+        <div id='posts' className={style.posts}>
+            <div id='post-wrapper' className={style.post_wrapper}>
+                <Info />
+                <div id='btn-wrapper' className={style.btn_wrapper}>
                     <a href='http://localhost:3000/post/create'>
-                        <button id='go-upload'>게시물 작성</button>
+                        <button id='go-upload' className={style.go_upload}>
+                            게시물 작성
+                        </button>
                     </a>
                 </div>
-                <div className='post-list'>
-                    {postList.map((post) => (
-                        <PostCard key={post.post_id} {...post} />
-                    ))}
+                <div className='post_list'>
+                    {postList && postList.map((post) => <PostCard key={post.post_id} {...post} />)}
                 </div>
-                <div id='loading'>
-                    <div className='spinner'></div>
-                </div>
-                <div id='toast-message'></div>
-                <div id='loading'>
-                    <div className='spinner'></div>
-                </div>
-                <div id='toast-message' ref={toastMessage}></div>
+                <Loading ref={loadingDiv} />
+                <Toast id='toast-message' ref={toastMessage} active={active}>
+                    더 이상 불러올 게시물이 없습니다.
+                </Toast>
             </div>
         </div>
     );

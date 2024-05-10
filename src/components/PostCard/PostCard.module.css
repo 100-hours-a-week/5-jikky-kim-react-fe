@@ -1,31 +1,32 @@
 /* 게시글 */
 .post {
     background-color: white;
-    border-radius: 0px 8px 8px 8px;
+    border-radius: 8px;
 }
-.post-title {
+.post_title {
     text-align: left;
     font-weight: 700;
     font-size: 24px;
-    margin: 12px;
+    margin: 16px;
+    padding-top: 16px;
 }
 
-.post-mid {
+.post_mid {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
-    margin: 12px;
+    margin: 16px;
 }
-.post-mid-l {
+.post_mid_l {
     display: flex;
     gap: 12px;
 }
 
-.post-creator {
+.post_creator {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin: 12px;
+    padding: 16px;
     font-weight: 700;
 }
 .avatar {
@@ -40,12 +41,7 @@
     font-size: 15px;
 }
 
-a {
-    text-decoration: none;
-    color: black;
-}
-
-.creator-img {
+.creator_img {
     width: 36px;
     height: 36px;
     border-radius: 100%;

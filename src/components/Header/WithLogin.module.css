@@ -1,0 +1,55 @@
+.header_text {
+    font-size: 32px;
+}
+
+/* header - login */
+.header_profile {
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+    background-color: gray;
+}
+
+#back-icon {
+    font-size: 32px;
+}
+#back-icon > a {
+    text-decoration: none;
+    color: black;
+}
+
+.none {
+    visibility: hidden;
+}
+
+/*user nav*/
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown_content {
+    flex-direction: column;
+    width: 140px;
+    display: none;
+    position: absolute;
+    right: 0;
+    z-index: 1; /*다른 요소들보다 앞에 배치*/
+}
+
+.dropdown_content .user_nav_item {
+    display: flex;
+    padding: 8px 12px;
+    background-color: var(--color-primary);
+    color: black;
+    text-decoration: none;
+}
+
+.dropdown_content .user_nav_item:hover {
+    background-color: #e9e9e9;
+}
+
+.dropdown:hover .dropdown_content {
+    display: flex;
+}

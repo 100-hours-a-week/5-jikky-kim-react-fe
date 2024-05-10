@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { validateEmail, validatePassword } from '../utils/validate';
-import { activateButton, deactivateButton, updateState, handleInputChange } from '../utils/utils';
-import { HELPER_TEXT } from '../constants/helperText';
-import api from '../utils/api';
-import Button from '../components/Button/Button';
-import Input from '../components/Input/Input';
+import { validateEmail, validatePassword } from '../../utils/validate';
+import { activateButton, deactivateButton, updateState, handleInputChange } from '../../utils/utils';
+import { HELPER_TEXT } from '../../constants/helperText';
+import api from '../../utils/api';
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
 
 export default function Login() {
     const [user, setUser] = useState({
@@ -19,7 +19,7 @@ export default function Login() {
         passwordHelper: '',
     });
 
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         deactivateButton('login-btn');
@@ -51,10 +51,10 @@ export default function Login() {
             const response = await api.post('/users/login', data);
             console.log(response);
             if (response?.message === 'login success') {
-                return history('/posts');
+                return navigate('/posts');
             }
             alert('아이디 또는 비밀번호가 잘못되었습니다.');
-            history('/login');
+            navigate('/login');
         }
     };
 
