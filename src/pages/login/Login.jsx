@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { validateEmail, validatePassword } from '../utils/validate';
-import { activateButton, deactivateButton, updateState, handleInputChange } from '../utils/utils';
-import { HELPER_TEXT } from '../constants/helperText';
-import api from '../utils/api';
-import Button from '../components/Button/Button';
-import Input from '../components/Input/Input';
+import { validateEmail, validatePassword } from '../../utils/validate';
+import { activateButton, deactivateButton, updateState, handleInputChange } from '../../utils/utils';
+import { HELPER_TEXT } from '../../constants/helperText';
+import api from '../../utils/api';
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
 
 export default function Login() {
     const [user, setUser] = useState({

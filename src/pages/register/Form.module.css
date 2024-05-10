@@ -1,4 +1,3 @@
-/* register input */
 .preview {
     display: none;
     width: 149px;
@@ -22,8 +21,4 @@
 
 .profile {
     display: none;
-}
-
-.main {
-    margin-bottom: 20vh;
 }

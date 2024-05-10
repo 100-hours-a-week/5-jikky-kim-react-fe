@@ -1,7 +1,8 @@
 import style from './Posts.module.css';
-import PostCard from '../components/PostCard/PostCard';
-import api from '../utils/api';
+import PostCard from '../../components/PostCard/PostCard';
+import api from '../../utils/api';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import Info from './Info';
 
 const Posts = () => {
     const [page, setPage] = useState(1);
@@ -84,12 +85,7 @@ const Posts = () => {
     return (
         <div id='posts' className={style.posts}>
             <div id='post-wrapper' className={style.post_wrapper}>
-                <div id='post-info' className={style.post_info}>
-                    <div className={style.post_info_text}>안녕하세요,</div>
-                    <div className={style.post_info_text}>
-                        아무 말 대잔치 <strong>게시판</strong> 입니다.
-                    </div>
-                </div>
+                <Info />
                 <div id='btn-wrapper' className={style.btn_wrapper}>
                     <a href='http://localhost:3000/post/create'>
                         <button id='go-upload' className={style.go_upload}>
