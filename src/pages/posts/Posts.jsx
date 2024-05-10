@@ -44,17 +44,17 @@ const Posts = () => {
         };
     }, [page, limit]);
 
+    const loadingDiv = useRef();
     const infiniteScroll = useCallback(() => {
         // 무한스크롤 데이터 로딩
-        const loadingDiv = document.querySelector('#loading');
         const loading = {
             start: () => {
                 // @로딩 시작
-                loadingDiv.style.display = 'block';
+                loadingDiv.current.style.display = 'block';
             },
             end: () => {
                 // @로딩 종료
-                loadingDiv.style.display = 'none';
+                loadingDiv.current.style.display = 'none';
             },
         };
         const windowScrollHandler = () => {
@@ -97,7 +97,7 @@ const Posts = () => {
                 <div className='post_list'>
                     {postList && postList.map((post) => <PostCard key={post.post_id} {...post} />)}
                 </div>
-                <Loading />
+                <Loading ref={loadingDiv} />
                 <Toast id='toast-message' ref={toastMessage} active={active}>
                     더 이상 불러올 게시물이 없습니다.
                 </Toast>
