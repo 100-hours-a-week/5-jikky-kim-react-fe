@@ -3,12 +3,14 @@ import PostCard from '../../components/PostCard/PostCard';
 import api from '../../utils/api';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Info from './Info';
+import Toast from '../../components/Toast/Toast';
 import Loading from '../../components/Loading/Loading';
 
 const Posts = () => {
     const [page, setPage] = useState(1);
     const [isFetching, setIsFetching] = useState(false);
     const [hasMore, setHasMore] = useState(true);
+    const [active, setActive] = useState('toast');
 
     const toastMessage = useRef();
     const timerRef = useRef(0);
@@ -22,11 +24,10 @@ const Posts = () => {
             setPostList((prev) => [...prev, ...posts]);
             if (posts.length === 0) {
                 setHasMore(false);
-                // toast로 안내
-                toastMessage.current.innerHTML = '더 이상 불러올 게시물이 없습니다.';
-                toastMessage.current.classList.add('active');
+                // toast 렌더링
+                setActive('toast-active');
                 setTimeout(function () {
-                    toastMessage.current.classList.remove('active');
+                    setActive('toast');
                 }, 1000);
             }
             return posts;
@@ -97,7 +98,9 @@ const Posts = () => {
                     {postList && postList.map((post) => <PostCard key={post.post_id} {...post} />)}
                 </div>
                 <Loading />
-                <div id='toast-message' ref={toastMessage}></div>
+                <Toast id='toast-message' ref={toastMessage} active={active}>
+                    더 이상 불러올 게시물이 없습니다.
+                </Toast>
             </div>
         </div>
     );

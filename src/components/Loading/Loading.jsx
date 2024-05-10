@@ -6,9 +6,6 @@ function Loading() {
             <div id='loading' className={style.loading}>
                 <div className={style.spinner}></div>
             </div>
-            <div id='loading'>
-                <div className='spinner'></div>
-            </div>
         </>
     );
 }
