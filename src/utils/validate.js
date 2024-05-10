@@ -1,4 +1,5 @@
 import { HELPER_TEXT } from '../constants/helperText';
+import api from './api';
 
 export const emailPattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
 export const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
@@ -25,17 +26,32 @@ export const validateNickname = (nickname) => {
     return true;
 };
 
-const duplicateNickname = (nickname) => {};
+const duplicateNickname = async (nickname) => {
+    const isDuplicate = await api.get('/users/nickname/check', { nickname });
+    if (isDuplicate.isExist) {
+        return 'NICKNAME_DUPLICATE';
+    }
+    return true;
+};
+const duplicateEmail = async (email) => {
+    const isDuplicate = await api.get('/users/email/check', { email });
+    if (isDuplicate.isExist) {
+        return 'EMAIL_DUPLICATE';
+    }
+    return true;
+};
 
 export const validateInput = {
-    email: (email, setState, setHelperText) => {
-        if (email === '') setState('emailHelper', HELPER_TEXT.EMAIL_EMPTY, setHelperText);
-        else {
-            // TODO : 중복 검사
-            validateEmail(email)
-                ? setState('emailHelper', '', setHelperText)
-                : setState('emailHelper', HELPER_TEXT.EMAIL_VALIDATION_FALSE, setHelperText);
+    email: async (email, setState, setHelperText) => {
+        if (email === '') return setState('emailHelper', HELPER_TEXT.EMAIL_EMPTY, setHelperText);
+        if (validateEmail(email)) {
+            let isDuplicate = await duplicateEmail(email);
+            if (isDuplicate !== true) {
+                return setState('emailHelper', HELPER_TEXT[isDuplicate], setHelperText);
+            }
+            return setState('emailHelper', '', setHelperText);
         }
+        setState('emailHelper', HELPER_TEXT.EMAIL_VALIDATION_FALSE, setHelperText);
     },
     password: (password, setState, setHelperText) => {
         if (password === '') setState('passwordHelper', HELPER_TEXT.PASSWORD_EMPTY, setHelperText);
@@ -50,18 +66,25 @@ export const validateInput = {
         else {
             password === passwordCheck
                 ? setState('passwordCheckHelper', '', setHelperText)
-                : setState('passwordCheckHelper', '비밀번호가 다릅니다.', setHelperText);
+                : setState('passwordCheckHelper', HELPER_TEXT.PASSWORD_NOT_SAME, setHelperText);
         }
     },
-    nickname: (nickname, setState, setHelperText) => {
+    nickname: async (nickname, setState, setHelperText) => {
         if (nickname === '') setState('nicknameHelper', HELPER_TEXT.NICKNAME_EMPTY, setHelperText);
         else {
             // TODO : 중복 검사
-            // let isDuplicate = isDuplicateNickname(nickname);
+            let isDuplicate = await duplicateNickname(nickname);
             let isValidate = validateNickname(nickname);
-            isValidate === true
-                ? setState('nicknameHelper', '', setHelperText)
-                : setState('nicknameHelper', HELPER_TEXT[isValidate], setHelperText);
+            if (isValidate === true) {
+                if (isDuplicate !== true) {
+                    return setState('nicknameHelper', HELPER_TEXT[isDuplicate], setHelperText);
+                }
+                return setState('nicknameHelper', '', setHelperText);
+            }
+            setState('nicknameHelper', HELPER_TEXT[isValidate], setHelperText);
+            // isValidate === true
+            //     ? setState('nicknameHelper', '', setHelperText)
+            //     : setState('nicknameHelper', HELPER_TEXT[isValidate], setHelperText);
         }
     },
 };
