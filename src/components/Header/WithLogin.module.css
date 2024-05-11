@@ -7,7 +7,7 @@
     width: 36px;
     height: 36px;
     border-radius: 100%;
-    background-color: gray;
+    cursor: pointer;
 }
 
 #back-icon {
@@ -19,7 +19,7 @@
 }
 
 .none {
-    visibility: hidden;
+    /* visibility: hidden; */
 }
 
 /*user nav*/
@@ -53,4 +53,9 @@
 
 .dropdown:hover .dropdown_content {
     display: flex;
+}
+
+.back {
+    font-size: 32px;
+    visibility: hidden;
 }
