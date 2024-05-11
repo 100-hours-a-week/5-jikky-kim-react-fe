@@ -5,6 +5,7 @@ import Header from './components/Header/Header';
 // page
 import Login from './pages/login';
 import Register from './pages/register';
+import User from './pages/user';
 import Posts from './pages/posts';
 
 function App() {
@@ -15,7 +16,8 @@ function App() {
                 <Routes>
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
-                    <Route path='/posts' element={<Posts />} />
+                    <Route path='/user/*' element={<User />} />
+                    <Route path='/posts/*' element={<Posts />} />
                 </Routes>
             </Router>
         </>

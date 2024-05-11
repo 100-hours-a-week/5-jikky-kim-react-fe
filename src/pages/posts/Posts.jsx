@@ -2,6 +2,7 @@ import style from './Posts.module.css';
 import PostCard from '../../components/PostCard/PostCard';
 import api from '../../utils/api';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import Info from './Info';
 import Toast from '../../components/Toast/Toast';
 import Loading from '../../components/Loading/Loading';
@@ -88,11 +89,11 @@ const Posts = () => {
             <div id='post-wrapper' className={style.post_wrapper}>
                 <Info />
                 <div id='btn-wrapper' className={style.btn_wrapper}>
-                    <a href='http://localhost:3000/post/create'>
+                    <Link to='/posts/create'>
                         <button id='go-upload' className={style.go_upload}>
                             게시물 작성
                         </button>
-                    </a>
+                    </Link>
                 </div>
                 <div className='post_list'>
                     {postList && postList.map((post) => <PostCard key={post.post_id} {...post} />)}

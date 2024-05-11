@@ -7,7 +7,7 @@ const Post = (props) => {
     const { post_id, title, created_at, creator, count } = props;
     return (
         <>
-            <Link to={'/post/' + post_id}>
+            <Link to={'/posts/' + post_id}>
                 <div className={style.post}>
                     <div className={style.post_title}>{titleSlice(title)}</div>
                     <div className={style.post_mid}>
