@@ -28,6 +28,13 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
     useEffect(() => {
         insertHeaderAvatar();
     }, []);
+
+    const handleLogout = async () => {
+        const response = await api.get('/users/logout');
+        console.log(response);
+        navigate('/login');
+    };
+
     return (
         <>
             <div className={`${style.header_profile} ${style.none}`}></div>
@@ -43,9 +50,9 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
                     <Link className={style.user_nav_item} to='/user/password'>
                         비밀번호 수정
                     </Link>
-                    <Link className={style.user_nav_item} id='logout-btn'>
+                    <div className={style.user_nav_item} id='logout-btn' onClick={handleLogout}>
                         로그아웃
-                    </Link>
+                    </div>
                 </nav>
             </div>
         </>
