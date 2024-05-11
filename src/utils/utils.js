@@ -4,8 +4,8 @@ export const activateButton = (id) => {
     button.classList.add('active');
 };
 
-export const deactivateButton = (className) => {
-    const button = document.getElementById(className);
+export const deactivateButton = (id) => {
+    const button = document.getElementById(id);
     button.classList.remove('active');
 };
 
