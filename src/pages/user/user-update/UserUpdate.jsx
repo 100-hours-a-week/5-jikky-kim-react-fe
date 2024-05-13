@@ -1,14 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import style from './UserUpdate.module.css';
 import api from '../../../utils/api';
-import Toast from '../../../components/Toast/Toast';
-import Input from '../../../components/Input/Input';
-import Button from '../../../components/Button/Button';
 import Form from './Form';
 function UserUpdate() {
-    const [active, setActive] = useState('toast');
-    const toastMessage = useRef();
-
     const [user, setUser] = useState({
         profile: '',
         email: '',
@@ -26,12 +20,6 @@ function UserUpdate() {
         };
         getUser();
     }, []);
-
-    // 변경 로직에 삽입
-    // setActive('toast-active');
-    // setTimeout(function () {
-    //     setActive('toast');
-    // }, 1000);
 
     return (
         <section>
