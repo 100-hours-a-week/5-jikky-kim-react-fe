@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Posts from './Posts';
 import PostDetail from './PostDetail.jsx';
-import PostCreate from './PostCreate.jsx';
+import PostCreate from './post-create';
 import PostUpdate from './PostUpdate.jsx';
 
 function index() {

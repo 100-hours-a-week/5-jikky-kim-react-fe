@@ -1,0 +1,18 @@
+/* section */
+
+.section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 80px;
+}
+
+.upload {
+    width: var(--main-width);
+    margin-top: 32px;
+}
+
+.page_title {
+    font-size: 24px;
+    font-weight: 700;
+}
