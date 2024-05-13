@@ -8,7 +8,6 @@ function withLogin(component) {
         if (props.isLoggedIn) {
             return component(props);
         } else {
-            // Login, Register Page Header
             return <div className={style.header_text}>아무 말 대잔치</div>;
         }
     };
@@ -26,8 +25,13 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
     };
     const profileImage = useRef();
     const insertHeaderAvatar = async () => {
-        const data = await api.get('/users/change');
-        profileImage.current.src = data.user.avatar;
+        const res = await api.get('/users/change');
+        if (res.status === 'fail') {
+            // TODO : 세션 만료 같으 토스트 메세지 출력
+            // TODO : 헤더 rerender 가 안되어서 임시처리. 리팩토링 하기
+            return navigate('/login');
+        }
+        profileImage.current.src = res.user.avatar;
     };
 
     function handleBackIconClick() {
@@ -56,6 +60,9 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
         const response = await api.get('/users/logout');
         console.log(response);
         navigate('/login');
+        // TODO : '로그아웃' 같으 토스트 메세지 출력
+        // TODO : 헤더 rerender 가 안되어서 임시처리. 리팩토링 하기
+        window.location.reload('/login');
     };
 
     return (
