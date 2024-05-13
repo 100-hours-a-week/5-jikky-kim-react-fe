@@ -16,7 +16,7 @@ function withLogin(component) {
 // TODO : Internal React error: Expected static flag was missing. Please notify the React team. 경고 로그 없애기
 const WithLogin = withLogin(({ isLoggedIn }) => {
     const location = useLocation();
-    const backIconPath = ['/user/update', '/user/password'];
+    const NonBackIconPath = ['/login', '/register', '/posts'];
     const back = useRef();
 
     const navigate = useNavigate();
@@ -43,7 +43,7 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
         insertHeaderAvatar();
 
         // 뒤로가기 버튼
-        if (backIconPath.includes(location.pathname)) {
+        if (!NonBackIconPath.includes(location.pathname)) {
             back.current.style.visibility = 'visible';
             back.current.innerHTML = '<';
             back.current.addEventListener('click', handleBackIconClick);
