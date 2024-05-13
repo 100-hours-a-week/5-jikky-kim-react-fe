@@ -141,6 +141,7 @@ const handleResponse = async (res) => {
         const errorMessage = res.status === 404 ? ErrorMessage.BAD_REQUEST : await data;
         // throw new Error(errorMessage);
         console.log(errorMessage);
+        return data;
     } catch (err) {
         if (typeof window !== 'undefined') {
             // throw new CustomHttpError(res.status, err.message);
