@@ -1,9 +1,9 @@
 import style from './Loading.module.css';
 import { forwardRef } from 'react';
-const Loading = forwardRef((_, ref) => {
+const Loading = forwardRef((props, ref) => {
     return (
         <>
-            <div id='loading' className={style.loading} ref={ref}>
+            <div ref={ref} className={style.loading}>
                 <div className={style.spinner}></div>
             </div>
         </>

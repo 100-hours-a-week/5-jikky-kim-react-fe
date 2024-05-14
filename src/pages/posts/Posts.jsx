@@ -1,7 +1,7 @@
 import style from './Posts.module.css';
 import PostCard from '../../components/PostCard/PostCard';
 import api from '../../utils/api';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Info from './Info';
 import Toast from '../../components/Toast/Toast';
@@ -46,32 +46,33 @@ const Posts = () => {
     }, [page, limit]);
 
     const loadingDiv = useRef();
-    const infiniteScroll = useCallback(() => {
-        // 무한스크롤 데이터 로딩
-        const loading = {
-            start: () => {
-                // @로딩 시작
-                loadingDiv.current.style.display = 'block';
-            },
-            end: () => {
-                // @로딩 종료
-                loadingDiv.current.style.display = 'none';
-            },
-        };
-        const windowScrollHandler = () => {
-            if (isFetching || !hasMore) return;
+    // 무한스크롤 데이터 로딩
+    const loading = {
+        start: () => {
+            // @로딩 시작
+            loadingDiv.current.style.display = 'block';
+        },
+        end: () => {
+            // @로딩 종료
+            loadingDiv.current.style.display = 'none';
+        },
+    };
+    const windowScrollHandler = () => {
+        if (isFetching || !hasMore) return;
 
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight + 10) {
-                // 디바운싱
-                clearTimeout(timerRef.current);
-                loading.start();
-                // NOTE : 애니매이션 보여주려고 1초 지연 결어 놓음. 필요시 삭제
-                timerRef.current = setTimeout(() => {
-                    setPage((prev) => prev + 1);
-                    loading.end();
-                }, 500);
-            }
-        };
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight + 10) {
+            // 디바운싱
+            clearTimeout(timerRef.current);
+            loading.start();
+            // NOTE : 애니매이션 보여주려고 1초 지연 결어 놓음. 필요시 삭제
+            timerRef.current = setTimeout(() => {
+                setPage((prev) => prev + 1);
+                loading.end();
+            }, 500);
+        }
+    };
+
+    useEffect(() => {
         window.addEventListener('scroll', windowScrollHandler);
         // cleanup 함수를 반환하여 이벤트 리스너를 제거
         return () => {
@@ -79,10 +80,6 @@ const Posts = () => {
             clearTimeout(timerRef.current);
         };
     }, [hasMore, isFetching]);
-
-    useEffect(() => {
-        infiniteScroll();
-    }, [infiniteScroll]);
 
     return (
         <div id='posts' className={style.posts}>
