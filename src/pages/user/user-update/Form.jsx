@@ -136,7 +136,6 @@ function Form() {
             <label htmlFor='nickname'>
                 <div className={style.update_label}>닉네임*</div>
                 <Input
-                    className={style.nickname}
                     name='nickname'
                     type='text'
                     placeholder='닉네임을 입력하세요.'

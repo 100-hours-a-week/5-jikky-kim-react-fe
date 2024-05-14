@@ -71,6 +71,7 @@ input {
 
 .change_profile_btn {
     border: 1px solid white;
+    text-align: center;
     border-radius: 25px;
     background-color: transparent;
     color: white;
@@ -90,6 +91,7 @@ input {
 }
 
 .user_wd_btn {
+    text-align: center;
     margin-top: 8px;
     color: black;
     text-decoration: none;
