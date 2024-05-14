@@ -78,3 +78,7 @@ form {
 .active {
     background-color: var(--color-active) !important;
 }
+
+button {
+    cursor: pointer;
+}
