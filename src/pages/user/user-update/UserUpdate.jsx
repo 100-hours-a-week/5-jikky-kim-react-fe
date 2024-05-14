@@ -26,18 +26,6 @@ function UserUpdate() {
             <div className='page-title'>회원정보수정</div>
             <div className={style.update_box}>
                 <Form />
-                <div className={style.overlay}>
-                    <div className={style.wd_modal}>
-                        <div className={style.wd_modal_body}>
-                            <div className={style.modal_title}>회원탈퇴 하시겠습니까?</div>
-                            <div className={style.modal_message}>작성된 게시글과 댓글은 삭제됩니다.</div>
-                            <div className={style.modal_sel_btn}>
-                                <button className={`${style.btn_cancel} ${style.wd_x}`}>취소</button>
-                                <button className={`${style.ok} ${style.wd_o}`}>확인</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
     );

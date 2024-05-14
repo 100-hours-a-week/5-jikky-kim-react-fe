@@ -1,13 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import api from '../../../utils/api';
+import { activateButton, deactivateButton, updateState, handleInputChange } from '../../../utils/utils';
+import { validateInput } from '../../../utils/validate';
+
 import Toast from '../../../components/Toast/Toast';
 import Input from '../../../components/Input/Input';
 import Button from '../../../components/Button/Button';
-import { validateInput } from '../../../utils/validate';
-import { activateButton, deactivateButton, updateState, handleInputChange } from '../../../utils/utils';
+
 import style from './Form.module.css';
 
 function Form() {
+    const navigate = useNavigate();
+
     const [active, setActive] = useState('toast');
     const [isValid, setIsValid] = useState(false);
 
@@ -15,6 +21,9 @@ function Form() {
     const imageInput = useRef();
     const preview = useRef();
     const updateForm = useRef();
+
+    const modal = useRef();
+    const overlay = useRef();
 
     const [user, setUser] = useState({
         profile: '',
@@ -96,6 +105,32 @@ function Form() {
         }
     };
 
+    // TODO : 모달 함수 분리
+    const openModal = (modal, overlay) => {
+        modal.current.style.display = 'flex';
+        overlay.current.style.display = 'flex';
+        document.querySelector('body').style.overflow = 'hidden';
+    };
+
+    const closeModal = (modal, overlay) => {
+        modal.current.style.display = 'none';
+        overlay.current.style.display = 'none';
+        document.querySelector('body').style.overflow = 'auto';
+    };
+
+    const deleteUserHandler = async () => {
+        try {
+            const response = await api.delete('/users');
+            console.log(response);
+            closeModal(modal, overlay);
+            // TODO : '회원 탈퇴' 같은 토스트 메세지 출력
+            // TODO : 헤더 rerender 가 안되어서 임시처리. 리팩토링 후 navigate('/login'); 으로 변경
+            window.location.href = '/login';
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
         getUser();
     }, []);
@@ -124,7 +159,6 @@ function Form() {
                 name='avatar'
                 className={style.profile}
                 accept='image/*'
-                // ref={imageInput}
                 onChange={(event) => fileInputHandler(event)}
             />
 
@@ -145,10 +179,32 @@ function Form() {
                 <div className='nickname-helper helper-text'>{helperText.nicknameHelper}</div>
             </label>
             <Button id='update-btn' text='수정하기'></Button>
-            <div className={style.user_wd_btn}>회원 탈퇴</div>
             <Toast ref={toastMessage} active={active}>
                 수정 완료
             </Toast>
+            {/* TODO : 모달 컴포넌트 분리 */}
+            <div className={style.user_wd_btn} onClick={() => openModal(modal, overlay)}>
+                회원 탈퇴
+            </div>
+            <div className={style.overlay} ref={overlay}>
+                <div className={style.wd_modal} ref={modal}>
+                    <div className={style.wd_modal_body}>
+                        <div className={style.modal_title}>회원탈퇴 하시겠습니까?</div>
+                        <div className={style.modal_message}>작성된 게시글과 댓글은 삭제됩니다.</div>
+                        <div className={style.modal_sel_btn}>
+                            <button
+                                className={`${style.btn_cancel} ${style.wd_x}`}
+                                onClick={() => closeModal(modal, overlay)}
+                            >
+                                취소
+                            </button>
+                            <button className={`${style.ok} ${style.wd_o}`} onClick={deleteUserHandler}>
+                                확인
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     );
 }
