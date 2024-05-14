@@ -25,6 +25,7 @@ function Post() {
         modal: useRef(),
         overlay: useRef(),
     };
+    const commentBtn = useRef();
 
     const [active, setActive] = useState('toast');
     const [message, setMessage] = useState('');
@@ -89,8 +90,13 @@ function Post() {
         openModal(postModalRefs.modal, postModalRefs.overlay);
     };
 
-    // 댓글 삭제 버튼 클릭
-    const updateCommentButtonClickHandler = () => {};
+    // 댓글 수정 버튼 클릭
+    const updateCommentButtonClickHandler = (comment, comment_id) => {
+        setCommentId(comment_id);
+        setCommentInput({ comment });
+        setIsCreateMode(false);
+    };
+
     // 댓글 삭제 버튼 클릭
     const deleteCommentButtonClickHandler = (comment_id) => {
         setCommentId(comment_id);
@@ -152,17 +158,39 @@ function Post() {
         closeModal(commentModalRefs.modal, commentModalRefs.overlay);
     };
 
+    const [isCreateMode, setIsCreateMode] = useState(true);
+
     // 댓글 등록 버튼 클릭
     const createCommentHandler = async (event) => {
+        console.log('createCommentHandler!');
         event.preventDefault();
-
         const res = await api.post(`/posts/${post_id}/comment`, { comment: commentInput.comment });
         console.log(res);
-        // TODO : 등록완료후 입력 댓글 지우기
+        setCommentInput({ comment: '' });
         if (res.message === 'comment created successfully') {
-            // TOAST 출력
             setMessage('댓글 작성 완료');
             setActive('toast-active');
+            setTimeout(function () {
+                setActive('toast');
+                // TODO : 댓글만 다시 불러오게 최적화
+                return fetchPost();
+            }, 1000);
+        }
+    };
+
+    // 댓글 수정 버튼 (입력폼에 있는) 클릭
+    const updateCommentHandler = async (event) => {
+        console.log('updateCommentHandler!');
+        event.preventDefault();
+        const res = await api.patch(`/posts/${post_id}/comment/${commentId}`, { comment: commentInput.comment });
+        console.log(res);
+        // TODO : 등록완료후 입력 댓글 지우기
+        setCommentInput({ comment: '' });
+        commentBtn.current.innerHTML = '댓글 등록';
+        if (res.message === 'comment updated successfully') {
+            setMessage('댓글 수정 완료');
+            setActive('toast-active');
+
             setTimeout(function () {
                 setActive('toast');
                 // TODO : 댓글만 다시 불러오게 최적화
@@ -183,7 +211,7 @@ function Post() {
             return activateButton('comment-create-btn');
         }
         deactivateButton('comment-create-btn');
-    });
+    }, [isValid]);
 
     return (
         <>
@@ -228,34 +256,58 @@ function Post() {
                         </div>
                     </div>
                     <div className='line'></div>
-                    <form className={style.form} onSubmit={createCommentHandler} ref={commentForm}>
-                        <textarea
-                            type='text'
-                            name='comment'
-                            className={style.comment}
-                            placeholder='댓글을 남겨주세요!'
-                            value={commentInput.comment}
-                            onChange={(event) => handleInputChange(event, setCommentInput)}
-                        />
-                        <div className='line'></div>
-                        <div className={style.btn_wrapper}>
-                            <button id='comment-create-btn' type='submit' className={style.comment_btn}>
-                                댓글 등록
-                            </button>
-                        </div>
-                    </form>
-
+                    {isCreateMode ? (
+                        <form className={style.form} onSubmit={createCommentHandler} ref={commentForm}>
+                            <textarea
+                                type='text'
+                                name='comment'
+                                className={style.comment}
+                                placeholder='댓글을 남겨주세요!'
+                                value={commentInput.comment}
+                                onChange={(event) => handleInputChange(event, setCommentInput)}
+                            />
+                            <div className='line'></div>
+                            <div className={style.btn_wrapper}>
+                                <button
+                                    id='comment-create-btn'
+                                    type='submit'
+                                    className={style.comment_btn}
+                                    ref={commentBtn}
+                                >
+                                    댓글 등록
+                                </button>
+                            </div>
+                        </form>
+                    ) : (
+                        <form className={style.form} onSubmit={updateCommentHandler} ref={commentForm}>
+                            <textarea
+                                type='text'
+                                name='comment'
+                                className={style.comment}
+                                placeholder='댓글을 남겨주세요!'
+                                value={commentInput.comment}
+                                onChange={(event) => handleInputChange(event, setCommentInput)}
+                            />
+                            <div className='line'></div>
+                            <div className={style.btn_wrapper}>
+                                <button
+                                    id='comment-create-btn'
+                                    type='submit'
+                                    className={style.comment_btn}
+                                    ref={commentBtn}
+                                >
+                                    댓글 수정
+                                </button>
+                            </div>
+                        </form>
+                    )}
                     <div className={style.comment_wrap}>
                         {post.comments?.map((comment) => {
                             return (
                                 <div className={style.comments} key={comment.comment_id}>
                                     <div className={style.comment_box}>
                                         <div className={style.comment_item}>
-                                            <img
-                                                className={style.avatar}
-                                                alt='avatar'
-                                                src={comment.creator.avatar}
-                                            ></img>
+                                            <img className={style.avatar} alt='avatar' src={comment.creator.avatar} />
                                             <div className={`${style.creator} ${style.comment_creator}`}>
                                                 {comment.creator.nickname}
                                             </div>
@@ -268,7 +320,9 @@ function Post() {
                                     {/* 로그인 한 유저 댓굴 일 때만 렌더링 */}
                                     {userId === comment.creator.user_id && (
                                         <ControlButton
-                                            updateButtonClickHandler={updateCommentButtonClickHandler}
+                                            updateButtonClickHandler={() =>
+                                                updateCommentButtonClickHandler(comment.content, comment.comment_id)
+                                            }
                                             deleteButtonClickHandler={() =>
                                                 deleteCommentButtonClickHandler(comment.comment_id)
                                             }
