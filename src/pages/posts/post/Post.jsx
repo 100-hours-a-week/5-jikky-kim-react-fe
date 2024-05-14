@@ -9,6 +9,7 @@ import Toast from '../../../components/Toast/Toast';
 import ControlButton from './ControlButton';
 
 import style from './Post.module.css';
+import Modal from '../../../components/Modal/Modal';
 
 function Post() {
     const navigate = useNavigate();
@@ -16,6 +17,14 @@ function Post() {
 
     const toastMessage = useRef();
     const commentForm = useRef();
+    const postModalRefs = {
+        modal: useRef(),
+        overlay: useRef(),
+    };
+    const commentModalRefs = {
+        modal: useRef(),
+        overlay: useRef(),
+    };
 
     const [active, setActive] = useState('toast');
     const [message, setMessage] = useState('');
@@ -32,6 +41,9 @@ function Post() {
         creator_avatar: '',
         creator_id: '',
     });
+
+    // 댓글 삭제를 위한 상태
+    const [commentId, setCommentId] = useState('');
 
     const [commentInput, setCommentInput] = useState({
         comment: '',
@@ -67,36 +79,94 @@ function Post() {
         setUserId(res.user.user_id);
     };
 
-    const navigateToUpdatePage = () => {
+    // 게시글 수정 버튼 클릭
+    const updatePostButtonClickHandler = () => {
         navigate(`/posts/${post_id}/update`);
     };
 
-    const deletePost = async () => {
+    // 게시글 삭제 버튼 클릭
+    const deletePostButtonClickHandler = () => {
+        openModal(postModalRefs.modal, postModalRefs.overlay);
+    };
+
+    // 댓글 삭제 버튼 클릭
+    const updateCommentButtonClickHandler = () => {};
+    // 댓글 삭제 버튼 클릭
+    const deleteCommentButtonClickHandler = (comment_id) => {
+        setCommentId(comment_id);
+        openModal(commentModalRefs.modal, commentModalRefs.overlay, comment_id);
+    };
+
+    // TODO : 모달 함수 분리 , user-update form에서도
+    const openModal = (modal, overlay) => {
+        modal.current.style.display = 'flex';
+        overlay.current.style.display = 'flex';
+        document.querySelector('body').style.overflow = 'hidden';
+    };
+
+    const closeModal = (modal, overlay) => {
+        modal.current.style.display = 'none';
+        overlay.current.style.display = 'none';
+        document.querySelector('body').style.overflow = 'auto';
+    };
+
+    // 게시물 삭제 확인 버튼 클릭
+    const postModalOkClickHandler = async () => {
         const res = await api.delete(`/posts/${post_id}`);
         console.log(res);
-        if (res.message == 'post deleted successfully') {
+        if (res.message === 'post deleted successfully') {
             // TOAST 출력
             setMessage('삭제 완료');
             setActive('toast-active');
             setTimeout(function () {
+                closeModal(postModalRefs.modal, postModalRefs.overlay);
                 setActive('toast');
                 return navigate('/posts');
             }, 1000);
         }
     };
 
+    // 게시글 삭제 취소 버튼 클릭
+    const postModalCancelClickHandler = () => {
+        closeModal(postModalRefs.modal, postModalRefs.overlay);
+    };
+
+    // 댓글 삭제 확인 버튼 클릭
+    const commentModalOkClickHandler = async () => {
+        const res = await api.delete(`/posts/${post_id}/comment/${commentId}`);
+        console.log(res);
+        if (res.message === 'comment deleted successfully') {
+            // TOAST 출력
+            setMessage('댓글 삭제 완료');
+            setActive('toast-active');
+            setTimeout(function () {
+                closeModal(commentModalRefs.modal, commentModalRefs.overlay);
+                setActive('toast');
+                return fetchPost();
+            }, 1000);
+        }
+    };
+
+    // 댓글 삭제 취소 버튼 클릭
+    const commentModalCancelClickHandler = () => {
+        closeModal(commentModalRefs.modal, commentModalRefs.overlay);
+    };
+
+    // 댓글 등록 버튼 클릭
     const createCommentHandler = async (event) => {
         event.preventDefault();
 
         const res = await api.post(`/posts/${post_id}/comment`, { comment: commentInput.comment });
         console.log(res);
+        // TODO : 등록완료후 입력 댓글 지우기
         if (res.message === 'comment created successfully') {
             // TOAST 출력
             setMessage('댓글 작성 완료');
             setActive('toast-active');
             setTimeout(function () {
                 setActive('toast');
-                // return fetchPost();
+                // TODO : 댓글만 다시 불러오게 최적화
+                return fetchPost();
             }, 1000);
         }
     };
@@ -133,8 +203,8 @@ function Post() {
                         {/* 로그인 한 유저 게시물 일 때만 렌더링 */}
                         {userId === post.creator_id && (
                             <ControlButton
-                                updateButtonClickHandler={navigateToUpdatePage}
-                                deleteButtonClickHandler={deletePost}
+                                updateButtonClickHandler={updatePostButtonClickHandler}
+                                deleteButtonClickHandler={deletePostButtonClickHandler}
                             />
                         )}
                     </div>
@@ -198,8 +268,10 @@ function Post() {
                                     {/* 로그인 한 유저 댓굴 일 때만 렌더링 */}
                                     {userId === comment.creator.user_id && (
                                         <ControlButton
-                                            updateButtonClickHandler={() => {}}
-                                            deleteButtonClickHandler={() => {}}
+                                            updateButtonClickHandler={updateCommentButtonClickHandler}
+                                            deleteButtonClickHandler={() =>
+                                                deleteCommentButtonClickHandler(comment.comment_id)
+                                            }
                                         />
                                     )}
                                 </div>
@@ -208,38 +280,19 @@ function Post() {
                     </div>
                 </div>
             </div>
-            <div id='overlay1' className={style.overlay1}>
-                <div id='del-modal' className={style.del_modal}>
-                    <div className={style.del_modal_body}>
-                        <div className={style.modal_title}>게시글을 삭제하시겠습니까?</div>
-                        <div className={style.modal_message}>삭제한 내용은 복구 할 수 없습니다.</div>
-                        <div className={style.modal_sel_btn}>
-                            <button id='del-x' className={style.btn_cancel}>
-                                취소
-                            </button>
-                            <button id='del-o' className={style.btn_ok}>
-                                확인
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id='overlay2' className={style.overlay1}>
-                <div id='del-comment-modal' className={style.del_modal}>
-                    <div id='del-modal-body2' className={style.del_modal_body}>
-                        <div className={style.modal_title}>댓글을 삭제하시겠습니까?</div>
-                        <div className={style.modal_message}>삭제한 내용은 복구 할 수 없습니다.</div>
-                        <div className={style.modal_sel_btn}>
-                            <button id='del-comment-x' className={style.btn_cancel}>
-                                취소
-                            </button>
-                            <button id='del-comment-o' className={style.btn_ok}>
-                                확인
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Modal
+                ref={postModalRefs}
+                modalOkClickHandler={postModalOkClickHandler}
+                modalCancelClickHandler={postModalCancelClickHandler}
+                text={'게시글'}
+            />
+            <Modal
+                ref={commentModalRefs}
+                modalOkClickHandler={commentModalOkClickHandler}
+                modalCancelClickHandler={commentModalCancelClickHandler}
+                text={'댓글'}
+            />
+
             <Toast ref={toastMessage} active={active}>
                 {message}
             </Toast>
