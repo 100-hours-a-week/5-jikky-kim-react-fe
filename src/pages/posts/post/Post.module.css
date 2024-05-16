@@ -11,6 +11,19 @@
     margin: 20px 0px;
 }
 
+/* postHeader */
+.post_header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.post_header_item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .avatar {
     width: 36px;
     height: 36px;
@@ -22,6 +35,11 @@
     font-size: 15px;
     font-weight: 700;
     margin-left: 10px;
+}
+
+.date {
+    font-size: 14px;
+    margin-left: 20px;
 }
 
 .post {

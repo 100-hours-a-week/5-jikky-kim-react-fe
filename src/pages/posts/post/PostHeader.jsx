@@ -1,6 +1,6 @@
 import React from 'react';
 import ControlButton from './ControlButton';
-import style from './PostHeader.module.css';
+import style from './Post.module.css';
 
 const PostHeader = ({ post, userId, updatePostButtonClickHandler, deletePostButtonClickHandler }) => (
     <div className={style.post_header}>
