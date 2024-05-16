@@ -11,7 +11,7 @@
     margin: 20px 0px;
 }
 
-/* postHeader */
+/* postHeader.jsx */
 .post_header {
     display: flex;
     justify-content: space-between;
@@ -47,7 +47,7 @@
     text-align: left;
 }
 
-/* 본문 */
+/* PostContent.jsx */
 .content {
     margin: 24px;
 }
@@ -111,77 +111,50 @@
     font-size: 15px;
 }
 
-/* 모달 */
-.overlay1,
-.overlay2 {
-    position: fixed;
-    top: 0;
-    left: 0;
+/* Form.jsx */
+.form {
+    margin: 20px 0;
+    height: 169px;
+    background-color: white;
+    border-radius: 16px;
+}
+
+.comment {
+    font-size: 15px;
+    line-height: var(---line-height);
+    margin: 20px 10px;
+    width: 550px;
+    margin: 20px;
+    height: 66px;
+    border: none;
+    resize: none;
+}
+
+.btn_wrapper {
+    text-align: end;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
 }
-.del_modal,
-.del_comment_modal {
-    position: fixed;
-    top: 50vh;
-    left: 50vw;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.del_modal_body {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    position: fixed;
-    top: 50vh;
-    left: 50vw;
-    transform: translate(-50%, -50%);
-    width: 408px;
-    height: 242px;
-
-    padding: 40px;
-
-    text-align: center;
-
-    background-color: rgb(255, 255, 255);
-    border-radius: 10px;
-    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-}
-
-.modal_title {
-    margin-top: 30px;
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.modal_message {
-    font-size: 20px;
-}
-
-.modal_sel_btn {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.modal_sel_btn button {
-    font-size: 20px;
-    width: 127px;
-    height: 44px;
-    border-radius: 12px;
-}
-
-button.btn_cancel {
-    background-color: #242424;
-    border: #242424;
+.comment_btn {
     color: white;
-}
-button.btn_ok {
     background-color: var(--color-secondary);
-    border: var(--color-secondary);
+    border: none;
+    width: 138px;
+    height: 39px;
+    border-radius: 16px;
+    margin: 2px 6px 6px 0;
+}
+
+/* ControlButton.jsx */
+.comment_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+.comment_item_button {
+    font-size: 15px;
+    border: 1px solid var(--color-secondary);
+    background-color: white;
+    border-radius: 8px;
+    padding: 2px 8px;
 }

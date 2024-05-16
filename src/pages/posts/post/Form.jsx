@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import style from './Form.module.css';
+import style from './Post.module.css';
 import Line from '../../../components/Line/Line';
 
 const Form = forwardRef((props, ref) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './ControlButton.module.css';
+import style from './Post.module.css';
 
 function ControlButton({ updateButtonClickHandler, deleteButtonClickHandler }) {
     return (
