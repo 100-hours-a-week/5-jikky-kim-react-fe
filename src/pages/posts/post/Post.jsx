@@ -5,12 +5,15 @@ import { activateButton, deactivateButton, handleInputChange, formatCount, title
 import { openModal, closeModal } from '../../../utils/modal';
 import api from '../../../utils/api';
 
-import Toast from '../../../components/Toast/Toast';
+import style from './Post.module.css';
 
+// 페이지 컴포넌트
 import PostHeader from './PostHeader';
+import PostContent from './PostContent';
 import ControlButton from './ControlButton';
 
-import style from './Post.module.css';
+// 공용 컴포넌트
+import Toast from '../../../components/Toast/Toast';
 import Modal from '../../../components/Modal/Modal';
 import Form from './Form';
 import Line from '../../../components/Line/Line';
@@ -216,24 +219,7 @@ function Post() {
                         deletePostButtonClickHandler={deletePostButtonClickHandler}
                     />
                     <Line />
-                    <div className={style.content}>
-                        <img className={style.post_image} alt='게시글 사진' src={post.post_image}></img>
-                        <div className={style.post_content}>{post.content}</div>
-                        <div className={style.view_co_btn}>
-                            <div>
-                                <div id='count-view' className='num'>
-                                    {formatCount(post.count_view)}
-                                </div>
-                                <div>조회수</div>
-                            </div>
-                            <div>
-                                <div id='count-comment' className='num'>
-                                    {formatCount(post.count_comment)}
-                                </div>
-                                <div>댓글</div>
-                            </div>
-                        </div>
-                    </div>
+                    <PostContent post={post} />
                     <Line />
                     {isCreateMode ? (
                         <Form
