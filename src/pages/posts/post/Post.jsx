@@ -15,8 +15,9 @@ import ControlButton from './ControlButton';
 // 공용 컴포넌트
 import Toast from '../../../components/Toast/Toast';
 import Modal from '../../../components/Modal/Modal';
-import Form from './Form';
+import CommentForm from './CommentForm';
 import Line from '../../../components/Line/Line';
+import CommentsSection from './CommentSection';
 
 function Post() {
     const navigate = useNavigate();
@@ -222,7 +223,7 @@ function Post() {
                     <PostContent post={post} />
                     <Line />
                     {isCreateMode ? (
-                        <Form
+                        <CommentForm
                             onSubmitHandler={createCommentHandler}
                             onChangeHandler={(event) => handleInputChange(event, setCommentInput)}
                             commentInput
@@ -230,7 +231,7 @@ function Post() {
                             text={'댓글 등록'}
                         />
                     ) : (
-                        <Form
+                        <CommentForm
                             onSubmitHandler={updateCommentHandler}
                             onChangeHandler={(event) => handleInputChange(event, setCommentInput)}
                             commentInput
@@ -238,37 +239,12 @@ function Post() {
                             text={'댓글 수정'}
                         />
                     )}
-                    <div className={style.comment_wrap}>
-                        {post.comments?.map((comment) => {
-                            return (
-                                <div className={style.comments} key={comment.comment_id}>
-                                    <div className={style.comment_box}>
-                                        <div className={style.comment_item}>
-                                            <img className={style.avatar} alt='avatar' src={comment.creator.avatar} />
-                                            <div className={`${style.creator} ${style.comment_creator}`}>
-                                                {comment.creator.nickname}
-                                            </div>
-                                            <div className={`${style.date} ${style.comment_created_at}`}>
-                                                {comment.created_at}
-                                            </div>
-                                        </div>
-                                        <div className={style.comment_content}>{comment.content}</div>
-                                    </div>
-                                    {/* 로그인 한 유저 댓굴 일 때만 렌더링 */}
-                                    {userId === comment.creator.user_id && (
-                                        <ControlButton
-                                            updateButtonClickHandler={() =>
-                                                updateCommentButtonClickHandler(comment.content, comment.comment_id)
-                                            }
-                                            deleteButtonClickHandler={() =>
-                                                deleteCommentButtonClickHandler(comment.comment_id)
-                                            }
-                                        />
-                                    )}
-                                </div>
-                            );
-                        })}
-                    </div>
+                    <CommentsSection
+                        post={post}
+                        userId={userId}
+                        updateCommentButtonClickHandler={updateCommentButtonClickHandler}
+                        deleteCommentButtonClickHandler={deleteCommentButtonClickHandler}
+                    />
                 </div>
             </div>
             <Modal
