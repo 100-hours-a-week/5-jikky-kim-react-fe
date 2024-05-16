@@ -9,6 +9,7 @@ import { HELPER_TEXT } from '../../../constants/helperText';
 import Button from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
 import Toast from '../../../components/Toast/Toast';
+import Line from '../../../components/Line/Line';
 
 import style from './Form.module.css';
 
@@ -122,7 +123,7 @@ const Form = () => {
         <form id='update-form' ref={updateForm} onSubmit={handleSubmit}>
             <label htmlFor='title'>
                 <div className={style.label_text}>제목*</div>
-                <div className='line'></div>
+                <Line />
                 <Input
                     className={style.title}
                     name='title'
@@ -132,11 +133,11 @@ const Form = () => {
                     onChange={(event) => handleInputChange(event, setPost)}
                     value={post.title}
                 />
-                <div className='line'></div>
+                <Line />
             </label>
             <label htmlFor='content'>
                 <div className={style.label_text}>내용*</div>
-                <div className='line'></div>
+                <Line />
                 <textarea
                     className={style.content}
                     name='content'
@@ -145,7 +146,7 @@ const Form = () => {
                     onChange={(event) => handleInputChange(event, setPost)}
                     value={post.content}
                 />
-                <div className='line'></div>
+                <Line />
             </label>
             <div className='update-helper helper-text'>{helperText.updateHelper}</div>
             <label htmlFor='img' id='img-text' className={style.label_text}>

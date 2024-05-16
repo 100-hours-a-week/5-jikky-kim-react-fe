@@ -9,6 +9,7 @@ import { HELPER_TEXT } from '../../../constants/helperText';
 import Button from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
 import Toast from '../../../components/Toast/Toast';
+import Line from '../../../components/Line/Line';
 
 import style from './Form.module.css';
 
@@ -92,7 +93,7 @@ const Form = () => {
         <form id='upload-form' ref={uploadForm} onSubmit={handleSubmit}>
             <label htmlFor='title'>
                 <div className={style.label_text}>제목*</div>
-                <div className='line'></div>
+                <Line />
                 <Input
                     className={style.title}
                     name='title'
@@ -101,11 +102,11 @@ const Form = () => {
                     placeholder='제목을 입력해주세요. (최대 26글자)'
                     onChange={(event) => handleInputChange(event, setPost)}
                 />
-                <div className='line'></div>
+                <Line />
             </label>
             <label htmlFor='content'>
                 <div className={style.label_text}>내용*</div>
-                <div className='line'></div>
+                <Line />
                 <textarea
                     className={style.content}
                     name='content'
@@ -113,7 +114,7 @@ const Form = () => {
                     placeholder='내용을 입력해주세요.'
                     onChange={(event) => handleInputChange(event, setPost)}
                 />
-                <div className='line'></div>
+                <Line />
             </label>
             <div className='upload-helper helper-text'>{helperText.uploadHelper}</div>
             <label htmlFor='img' id='img-text' className={style.label_text}>

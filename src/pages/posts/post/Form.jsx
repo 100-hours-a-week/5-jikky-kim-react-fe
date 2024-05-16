@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import style from './Form.module.css';
+import Line from '../../../components/Line/Line';
 
 const Form = forwardRef((props, ref) => {
     const { commentForm, commentBtn } = ref;
@@ -13,7 +14,7 @@ const Form = forwardRef((props, ref) => {
                 value={props.commentInput.comment}
                 onChange={props.onChangeHandler}
             />
-            <div className='line'></div>
+            <Line />
             <div className={style.btn_wrapper}>
                 <button id='comment-create-btn' type='submit' className={style.comment_btn} ref={commentBtn}>
                     {props.text}

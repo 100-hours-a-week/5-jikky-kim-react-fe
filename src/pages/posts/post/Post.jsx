@@ -12,6 +12,7 @@ import ControlButton from './ControlButton';
 import style from './Post.module.css';
 import Modal from '../../../components/Modal/Modal';
 import Form from './Form';
+import Line from '../../../components/Line/Line';
 
 function Post() {
     const navigate = useNavigate();
@@ -31,8 +32,6 @@ function Post() {
         commentForm: useRef(),
         commentBtn: useRef(),
     };
-    // const commentForm = useRef();
-    // const commentBtn = useRef();
 
     const [active, setActive] = useState('toast');
     const [message, setMessage] = useState('');
@@ -52,10 +51,10 @@ function Post() {
 
     // 댓글 삭제를 위한 상태
     const [commentId, setCommentId] = useState('');
-
     const [commentInput, setCommentInput] = useState({
         comment: '',
     });
+    const [isCreateMode, setIsCreateMode] = useState(true);
 
     const isValid = commentInput.comment;
 
@@ -152,8 +151,6 @@ function Post() {
         closeModal(commentModalRefs.modal, commentModalRefs.overlay);
     };
 
-    const [isCreateMode, setIsCreateMode] = useState(true);
-
     // 댓글 등록 버튼 클릭
     const createCommentHandler = async (event) => {
         console.log('createCommentHandler!');
@@ -229,7 +226,7 @@ function Post() {
                             />
                         )}
                     </div>
-                    <div className='line'></div>
+                    <Line />
                     <div className={style.content}>
                         <img className={style.post_image} alt='게시글 사진' src={post.post_image}></img>
                         <div className={style.post_content}>{post.content}</div>
@@ -248,7 +245,7 @@ function Post() {
                             </div>
                         </div>
                     </div>
-                    <div className='line'></div>
+                    <Line />
                     {isCreateMode ? (
                         <Form
                             onSubmitHandler={createCommentHandler}
