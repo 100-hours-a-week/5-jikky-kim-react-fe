@@ -3,17 +3,17 @@ import { useNavigate } from 'react-router-dom';
 
 import api from '../../../utils/api';
 import { activateButton, deactivateButton, updateState, handleInputChange } from '../../../utils/utils';
+import { openModal, closeModal } from '../../../utils/modal';
 import { validateInput } from '../../../utils/validate';
 
 import Toast from '../../../components/Toast/Toast';
 import Input from '../../../components/Input/Input';
 import Button from '../../../components/Button/Button';
+import Modal from '../../../components/Modal/Modal';
 
 import style from './Form.module.css';
 
 function Form() {
-    const navigate = useNavigate();
-
     const [active, setActive] = useState('toast');
     const [isValid, setIsValid] = useState(false);
 
@@ -22,8 +22,10 @@ function Form() {
     const preview = useRef();
     const updateForm = useRef();
 
-    const modal = useRef();
-    const overlay = useRef();
+    const updateUserModalRefs = {
+        modal: useRef(),
+        overlay: useRef(),
+    };
 
     const [user, setUser] = useState({
         profile: '',
@@ -105,24 +107,11 @@ function Form() {
         }
     };
 
-    // TODO : 모달 함수 분리
-    const openModal = (modal, overlay) => {
-        modal.current.style.display = 'flex';
-        overlay.current.style.display = 'flex';
-        document.querySelector('body').style.overflow = 'hidden';
-    };
-
-    const closeModal = (modal, overlay) => {
-        modal.current.style.display = 'none';
-        overlay.current.style.display = 'none';
-        document.querySelector('body').style.overflow = 'auto';
-    };
-
     const deleteUserHandler = async () => {
         try {
             const response = await api.delete('/users');
             console.log(response);
-            closeModal(modal, overlay);
+            closeModal(updateUserModalRefs.modal, updateUserModalRefs.overlay);
             // TODO : '회원 탈퇴' 같은 토스트 메세지 출력
             // TODO : 헤더 rerender 가 안되어서 임시처리. 리팩토링 후 navigate('/login'); 으로 변경
             window.location.href = '/login';
@@ -139,6 +128,9 @@ function Form() {
         validateNickname();
     }, [user.nickname]);
 
+    const cancelClickHandler = () => {
+        closeModal(updateUserModalRefs.modal, updateUserModalRefs.overlay);
+    };
     return (
         <form className={style.update_form} ref={updateForm} onSubmit={handleSubmit}>
             <div className={style.update_label}>프로필 사진*</div>
@@ -183,10 +175,21 @@ function Form() {
                 수정 완료
             </Toast>
             {/* TODO : 모달 컴포넌트 분리 */}
-            <div className={style.user_wd_btn} onClick={() => openModal(modal, overlay)}>
+            <div
+                className={style.user_wd_btn}
+                onClick={() => openModal(updateUserModalRefs.modal, updateUserModalRefs.overlay)}
+            >
                 회원 탈퇴
             </div>
-            <div className={style.overlay} ref={overlay}>
+            <Modal
+                ref={updateUserModalRefs}
+                modalOkClickHandler={deleteUserHandler}
+                modalCancelClickHandler={cancelClickHandler}
+                text1={'회원탈퇴 하시겠습니까?'}
+                text2={'작성된 게시글과 댓글은 삭제됩니다.'}
+            />
+
+            {/* <div className={style.overlay} ref={overlay}>
                 <div className={style.wd_modal} ref={modal}>
                     <div className={style.wd_modal_body}>
                         <div className={style.modal_title}>회원탈퇴 하시겠습니까?</div>
@@ -204,7 +207,7 @@ function Form() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </form>
     );
 }

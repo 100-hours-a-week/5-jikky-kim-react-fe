@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { activateButton, deactivateButton, handleInputChange } from '../../../utils/utils';
+import { openModal, closeModal } from '../../../utils/modal';
 import api from '../../../utils/api';
 
 import Toast from '../../../components/Toast/Toast';
@@ -101,19 +102,6 @@ function Post() {
     const deleteCommentButtonClickHandler = (comment_id) => {
         setCommentId(comment_id);
         openModal(commentModalRefs.modal, commentModalRefs.overlay, comment_id);
-    };
-
-    // TODO : 모달 함수 분리 , user-update form에서도
-    const openModal = (modal, overlay) => {
-        modal.current.style.display = 'flex';
-        overlay.current.style.display = 'flex';
-        document.querySelector('body').style.overflow = 'hidden';
-    };
-
-    const closeModal = (modal, overlay) => {
-        modal.current.style.display = 'none';
-        overlay.current.style.display = 'none';
-        document.querySelector('body').style.overflow = 'auto';
     };
 
     // 게시물 삭제 확인 버튼 클릭
@@ -338,13 +326,15 @@ function Post() {
                 ref={postModalRefs}
                 modalOkClickHandler={postModalOkClickHandler}
                 modalCancelClickHandler={postModalCancelClickHandler}
-                text={'게시글'}
+                text1={'게시글을 삭제하시겠습니까?'}
+                text2={'삭제한 내용은 복구 할 수 없습니다.'}
             />
             <Modal
                 ref={commentModalRefs}
                 modalOkClickHandler={commentModalOkClickHandler}
                 modalCancelClickHandler={commentModalCancelClickHandler}
-                text={'댓글'}
+                text1={'댓글을 삭제하시겠습니까?'}
+                text2={'삭제한 내용은 복구 할 수 없습니다.'}
             />
 
             <Toast ref={toastMessage} active={active}>
