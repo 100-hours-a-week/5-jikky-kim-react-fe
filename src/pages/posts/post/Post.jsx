@@ -7,6 +7,7 @@ import api from '../../../utils/api';
 
 import Toast from '../../../components/Toast/Toast';
 
+import PostHeader from './PostHeader';
 import ControlButton from './ControlButton';
 
 import style from './Post.module.css';
@@ -208,24 +209,12 @@ function Post() {
             <div className={style.section}>
                 <div className={style.post}>
                     <div className={style.post_title}>{titleSlice(post.title)}</div>
-                    <div className={style.post_header}>
-                        <div className={style.post_header_item}>
-                            <img id='avatar' className={style.avatar} alt='profile' src={post.creator_avatar}></img>
-                            <div id='creator' className={style.creator}>
-                                {post.creator_nickname}
-                            </div>
-                            <div id='post-created-at' className={style.date}>
-                                {post.created_at}
-                            </div>
-                        </div>
-                        {/* 로그인 한 유저 게시물 일 때만 렌더링 */}
-                        {userId === post.creator_id && (
-                            <ControlButton
-                                updateButtonClickHandler={updatePostButtonClickHandler}
-                                deleteButtonClickHandler={deletePostButtonClickHandler}
-                            />
-                        )}
-                    </div>
+                    <PostHeader
+                        post={post}
+                        userId={userId}
+                        updatePostButtonClickHandler={updatePostButtonClickHandler}
+                        deletePostButtonClickHandler={deletePostButtonClickHandler}
+                    />
                     <Line />
                     <div className={style.content}>
                         <img className={style.post_image} alt='게시글 사진' src={post.post_image}></img>

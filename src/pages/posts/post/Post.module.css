@@ -11,24 +11,6 @@
     margin: 20px 0px;
 }
 
-.post {
-    width: var(--main-width);
-    text-align: left;
-}
-
-/* 게시물 상단 */
-.post_header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.post_header_item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
 .avatar {
     width: 36px;
     height: 36px;
@@ -42,17 +24,9 @@
     margin-left: 10px;
 }
 
-.date {
-    font-size: 14px;
-    margin-left: 20px;
-}
-
-.post-header-item button {
-    font-size: 15px;
-    border: 1px solid var(--color-secondary);
-    background-color: white;
-    border-radius: 8px;
-    padding: 2px 8px;
+.post {
+    width: var(--main-width);
+    text-align: left;
 }
 
 /* 본문 */
