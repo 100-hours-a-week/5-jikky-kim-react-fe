@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import style from './Post.module.css';
 import Line from '../../../components/Line/Line';
 
-const Form = forwardRef((props, ref) => {
+const CommentForm = forwardRef((props, ref) => {
     const { commentForm, commentBtn } = ref;
     return (
         <form className={style.form} onSubmit={props.onSubmitHandler} ref={commentForm}>
@@ -24,4 +24,4 @@ const Form = forwardRef((props, ref) => {
     );
 });
 
-export default Form;
+export default CommentForm;
