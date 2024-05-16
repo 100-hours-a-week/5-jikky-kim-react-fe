@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { activateButton, deactivateButton, handleInputChange } from '../../../utils/utils';
+import { activateButton, deactivateButton, handleInputChange, formatCount, titleSlice } from '../../../utils/utils';
 import { openModal, closeModal } from '../../../utils/modal';
 import api from '../../../utils/api';
 
@@ -207,7 +207,7 @@ function Post() {
         <>
             <div className={style.section}>
                 <div className={style.post}>
-                    <div className={style.post_title}>{post.title}</div>
+                    <div className={style.post_title}>{titleSlice(post.title)}</div>
                     <div className={style.post_header}>
                         <div className={style.post_header_item}>
                             <img id='avatar' className={style.avatar} alt='profile' src={post.creator_avatar}></img>
@@ -233,13 +233,13 @@ function Post() {
                         <div className={style.view_co_btn}>
                             <div>
                                 <div id='count-view' className='num'>
-                                    {post.count_view}
+                                    {formatCount(post.count_view)}
                                 </div>
                                 <div>조회수</div>
                             </div>
                             <div>
                                 <div id='count-comment' className='num'>
-                                    {post.count_comment}
+                                    {formatCount(post.count_comment)}
                                 </div>
                                 <div>댓글</div>
                             </div>
