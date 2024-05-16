@@ -79,12 +79,10 @@ export const validateInput = {
                 if (isDuplicate !== true) {
                     return setState('nicknameHelper', HELPER_TEXT[isDuplicate], setHelperText);
                 }
-                return setState('nicknameHelper', '', setHelperText);
+                setState('nicknameHelper', '', setHelperText);
+                return true;
             }
-            setState('nicknameHelper', HELPER_TEXT[isValidate], setHelperText);
-            // isValidate === true
-            //     ? setState('nicknameHelper', '', setHelperText)
-            //     : setState('nicknameHelper', HELPER_TEXT[isValidate], setHelperText);
+            return setState('nicknameHelper', HELPER_TEXT[isValidate], setHelperText);
         }
     },
 };

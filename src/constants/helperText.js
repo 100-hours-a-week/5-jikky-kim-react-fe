@@ -12,4 +12,5 @@ export const HELPER_TEXT = {
     NICKNAME_VALIDATION_FALSE_LENGTH: '*닉네임은 최대 10자까지 작성 가능합니다.',
     NICKNAME_DUPLICATE: '*중복된 닉네임 입니다.',
     PROFILE_EMPTY: '*프로필 사진을 추가해주세요.',
+    UPLOAD_TEXT: '*제목, 내용, 이미지을 모두 작성해주세요.',
 };

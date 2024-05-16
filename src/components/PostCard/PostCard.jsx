@@ -2,12 +2,13 @@ import React from 'react';
 import style from './PostCard.module.css';
 import { Link } from 'react-router-dom';
 import { formatCount, titleSlice } from '../../utils/utils';
+import Line from '../Line/Line';
 
 const Post = (props) => {
     const { post_id, title, created_at, creator, count } = props;
     return (
         <>
-            <Link to={'/post/' + post_id}>
+            <Link to={'/posts/' + post_id}>
                 <div className={style.post}>
                     <div className={style.post_title}>{titleSlice(title)}</div>
                     <div className={style.post_mid}>
@@ -18,7 +19,7 @@ const Post = (props) => {
                         </div>
                         <div className={style.created_at}>{created_at}</div>
                     </div>
-                    <div className='line'></div>
+                    <Line />
                     <div className={style.post_creator}>
                         <img className={style.avatar} alt='avatar' src={creator.avatar} />
                         <div className={style.creator}>{creator.nickname}</div>
