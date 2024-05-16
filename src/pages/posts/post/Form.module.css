@@ -1,0 +1,31 @@
+.form {
+    margin: 20px 0;
+    height: 169px;
+    background-color: white;
+    border-radius: 16px;
+}
+
+.comment {
+    font-size: 15px;
+    line-height: var(---line-height);
+    margin: 20px 10px;
+    width: 550px;
+    margin: 20px;
+    height: 66px;
+    border: none;
+    resize: none;
+}
+
+.btn_wrapper {
+    text-align: end;
+    width: 100%;
+}
+.comment_btn {
+    color: white;
+    background-color: var(--color-secondary);
+    border: none;
+    width: 138px;
+    height: 39px;
+    border-radius: 16px;
+    margin: 2px 6px 6px 0;
+}

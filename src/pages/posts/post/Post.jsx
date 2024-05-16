@@ -11,13 +11,13 @@ import ControlButton from './ControlButton';
 
 import style from './Post.module.css';
 import Modal from '../../../components/Modal/Modal';
+import Form from './Form';
 
 function Post() {
     const navigate = useNavigate();
     const location = useLocation();
 
     const toastMessage = useRef();
-    const commentForm = useRef();
     const postModalRefs = {
         modal: useRef(),
         overlay: useRef(),
@@ -26,7 +26,13 @@ function Post() {
         modal: useRef(),
         overlay: useRef(),
     };
-    const commentBtn = useRef();
+
+    const commentRefs = {
+        commentForm: useRef(),
+        commentBtn: useRef(),
+    };
+    // const commentForm = useRef();
+    // const commentBtn = useRef();
 
     const [active, setActive] = useState('toast');
     const [message, setMessage] = useState('');
@@ -168,13 +174,12 @@ function Post() {
 
     // 댓글 수정 버튼 (입력폼에 있는) 클릭
     const updateCommentHandler = async (event) => {
-        console.log('updateCommentHandler!');
         event.preventDefault();
         const res = await api.patch(`/posts/${post_id}/comment/${commentId}`, { comment: commentInput.comment });
         console.log(res);
-        // TODO : 등록완료후 입력 댓글 지우기
+        // TODO : 등록완료후 입력 댓글 지우기 => 현재 안 비워짐
         setCommentInput({ comment: '' });
-        commentBtn.current.innerHTML = '댓글 등록';
+        commentRefs.commentBtn.current.innerHTML = '댓글 등록';
         if (res.message === 'comment updated successfully') {
             setMessage('댓글 수정 완료');
             setActive('toast-active');
@@ -245,49 +250,21 @@ function Post() {
                     </div>
                     <div className='line'></div>
                     {isCreateMode ? (
-                        <form className={style.form} onSubmit={createCommentHandler} ref={commentForm}>
-                            <textarea
-                                type='text'
-                                name='comment'
-                                className={style.comment}
-                                placeholder='댓글을 남겨주세요!'
-                                value={commentInput.comment}
-                                onChange={(event) => handleInputChange(event, setCommentInput)}
-                            />
-                            <div className='line'></div>
-                            <div className={style.btn_wrapper}>
-                                <button
-                                    id='comment-create-btn'
-                                    type='submit'
-                                    className={style.comment_btn}
-                                    ref={commentBtn}
-                                >
-                                    댓글 등록
-                                </button>
-                            </div>
-                        </form>
+                        <Form
+                            onSubmitHandler={createCommentHandler}
+                            onChangeHandler={(event) => handleInputChange(event, setCommentInput)}
+                            commentInput
+                            ref={commentRefs}
+                            text={'댓글 등록'}
+                        />
                     ) : (
-                        <form className={style.form} onSubmit={updateCommentHandler} ref={commentForm}>
-                            <textarea
-                                type='text'
-                                name='comment'
-                                className={style.comment}
-                                placeholder='댓글을 남겨주세요!'
-                                value={commentInput.comment}
-                                onChange={(event) => handleInputChange(event, setCommentInput)}
-                            />
-                            <div className='line'></div>
-                            <div className={style.btn_wrapper}>
-                                <button
-                                    id='comment-create-btn'
-                                    type='submit'
-                                    className={style.comment_btn}
-                                    ref={commentBtn}
-                                >
-                                    댓글 수정
-                                </button>
-                            </div>
-                        </form>
+                        <Form
+                            onSubmitHandler={updateCommentHandler}
+                            onChangeHandler={(event) => handleInputChange(event, setCommentInput)}
+                            commentInput
+                            ref={commentRefs}
+                            text={'댓글 수정'}
+                        />
                     )}
                     <div className={style.comment_wrap}>
                         {post.comments?.map((comment) => {
