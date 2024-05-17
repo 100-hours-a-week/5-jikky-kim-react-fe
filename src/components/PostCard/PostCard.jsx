@@ -5,7 +5,7 @@ import { formatCount, titleSlice } from '../../utils/utils';
 import Line from '../Line/Line';
 
 const Post = (props) => {
-    const { post_id, title, created_at, creator, count } = props;
+    const { post_id, title, created_at, creator, count, comments } = props;
     return (
         <>
             <Link to={'/posts/' + post_id}>
@@ -14,7 +14,7 @@ const Post = (props) => {
                     <div className={style.post_mid}>
                         <div className={style.post_mid_l}>
                             <div className={style.count_like}>좋아요 {formatCount(count.like)}</div>
-                            <div className={style.count_comment}>댓글 {formatCount(count.comment)}</div>
+                            <div className={style.count_comment}>댓글 {formatCount(comments.length)}</div>
                             <div className={style.count_view}>조회수 {formatCount(count.view)}</div>
                         </div>
                         <div className={style.created_at}>{created_at}</div>

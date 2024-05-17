@@ -158,7 +158,6 @@ function Post() {
 
     // 댓글 등록 버튼 클릭
     const createCommentHandler = async (event) => {
-        console.log('createCommentHandler!');
         event.preventDefault();
         const res = await api.post(`/posts/${post_id}/comment`, { comment: commentInput.comment });
         console.log(res);
