@@ -23,6 +23,9 @@ export const handleInputChange = (e, setState) => {
         [name]: value,
     }));
 };
+export const handleSingleInputChange = (e, setState) => {
+    setState(e.target.value);
+};
 
 // 조회수,댓글,좋아요 수 등 형식 변환
 export const formatCount = (count) => {

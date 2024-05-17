@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { activateButton, deactivateButton, handleInputChange, formatCount, titleSlice } from '../../../utils/utils';
+import { activateButton, deactivateButton, handleSingleInputChange, titleSlice } from '../../../utils/utils';
 import { openModal, closeModal } from '../../../utils/modal';
 import api from '../../../utils/api';
 
@@ -10,7 +10,6 @@ import style from './Post.module.css';
 // 페이지 컴포넌트
 import PostHeader from './PostHeader';
 import PostContent from './PostContent';
-import ControlButton from './ControlButton';
 
 // 공용 컴포넌트
 import Toast from '../../../components/Toast/Toast';
@@ -56,12 +55,13 @@ function Post() {
 
     // 댓글 삭제를 위한 상태
     const [commentId, setCommentId] = useState('');
-    const [commentInput, setCommentInput] = useState({
-        comment: '',
-    });
+    // const [commentInput, setCommentInput] = useState({
+    //     comment: '',
+    // });
+    const [commentInput, setCommentInput] = useState('');
     const [isCreateMode, setIsCreateMode] = useState(true);
 
-    const isValid = commentInput.comment;
+    const isValid = commentInput;
 
     // TODO : 전역 상태로 리팩토링
     const [userId, setUserId] = useState('');
@@ -104,7 +104,7 @@ function Post() {
     // 댓글 수정 버튼 클릭
     const updateCommentButtonClickHandler = (comment, comment_id) => {
         setCommentId(comment_id);
-        setCommentInput({ comment });
+        setCommentInput(comment);
         setIsCreateMode(false);
     };
 
@@ -159,9 +159,9 @@ function Post() {
     // 댓글 등록 버튼 클릭
     const createCommentHandler = async (event) => {
         event.preventDefault();
-        const res = await api.post(`/posts/${post_id}/comment`, { comment: commentInput.comment });
+        const res = await api.post(`/posts/${post_id}/comment`, { comment: commentInput });
         console.log(res);
-        setCommentInput({ comment: '' });
+        setCommentInput('');
         if (res.message === 'comment created successfully') {
             setMessage('댓글 작성 완료');
             setActive('toast-active');
@@ -176,15 +176,14 @@ function Post() {
     // 댓글 수정 버튼 (입력폼에 있는) 클릭
     const updateCommentHandler = async (event) => {
         event.preventDefault();
-        const res = await api.patch(`/posts/${post_id}/comment/${commentId}`, { comment: commentInput.comment });
+        const res = await api.patch(`/posts/${post_id}/comment/${commentId}`, { comment: commentInput });
         console.log(res);
-        // TODO : 등록완료후 입력 댓글 지우기 => 현재 안 비워짐
-        setCommentInput({ comment: '' });
+        setCommentInput('');
         commentRefs.commentBtn.current.innerHTML = '댓글 등록';
         if (res.message === 'comment updated successfully') {
             setMessage('댓글 수정 완료');
             setActive('toast-active');
-
+            setIsCreateMode(true);
             setTimeout(function () {
                 setActive('toast');
                 // TODO : 댓글만 다시 불러오게 최적화
@@ -224,16 +223,16 @@ function Post() {
                     {isCreateMode ? (
                         <CommentForm
                             onSubmitHandler={createCommentHandler}
-                            onChangeHandler={(event) => handleInputChange(event, setCommentInput)}
-                            commentInput
+                            onChangeHandler={(e) => handleSingleInputChange(e, setCommentInput)}
+                            commentInput={commentInput}
                             ref={commentRefs}
                             text={'댓글 등록'}
                         />
                     ) : (
                         <CommentForm
                             onSubmitHandler={updateCommentHandler}
-                            onChangeHandler={(event) => handleInputChange(event, setCommentInput)}
-                            commentInput
+                            onChangeHandler={(e) => handleSingleInputChange(e, setCommentInput)}
+                            commentInput={commentInput}
                             ref={commentRefs}
                             text={'댓글 수정'}
                         />

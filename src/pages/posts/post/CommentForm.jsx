@@ -11,7 +11,7 @@ const CommentForm = forwardRef((props, ref) => {
                 name='comment'
                 className={style.comment}
                 placeholder='댓글을 남겨주세요!'
-                value={props.commentInput.comment}
+                value={props.commentInput}
                 onChange={props.onChangeHandler}
             />
             <Line />
