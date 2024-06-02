@@ -97,7 +97,7 @@ const Posts = () => {
                 </div>
                 <Loading ref={loadingDiv} />
                 <Toast id='toast-message' ref={toastMessage} active={active}>
-                    더 이상 불러올 게시물이 없습니다.
+                    불러올 게시물이 없습니다.
                 </Toast>
             </div>
         </div>

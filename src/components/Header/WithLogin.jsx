@@ -1,20 +1,23 @@
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import api from '../../utils/api';
 import style from './WithLogin.module.css';
+import Toast from '../Toast/Toast';
 
 function withLogin(component) {
     return function (props) {
         if (props.isLoggedIn) {
             return component(props);
-        } else {
-            return <div className={style.header_text}>아무 말 대잔치</div>;
         }
+        return <div className={style.header_text}>아무 말 대잔치</div>;
     };
 }
 
 // TODO : Internal React error: Expected static flag was missing. Please notify the React team. 경고 로그 없애기
 const WithLogin = withLogin(({ isLoggedIn }) => {
+    const toastMessage = useRef();
+    const [active, setActive] = useState('toast');
+
     const location = useLocation();
     const NonBackIconPath = ['/login', '/register', '/posts'];
     const back = useRef();
@@ -59,10 +62,13 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
     const handleLogout = async () => {
         const response = await api.get('/users/logout');
         console.log(response);
-        navigate('/login');
-        // TODO : '로그아웃' 같으 토스트 메세지 출력
-        // TODO : 헤더 rerender 가 안되어서 임시처리. 리팩토링 하기
-        window.location.reload('/login');
+        setActive('toast-active');
+        setTimeout(function () {
+            setActive('toast');
+            // TODO : 헤더 rerender 가 안되어서 임시처리. 리팩토링 하기
+            // navigate('/login');
+            window.location.href = '/login';
+        }, 1000);
     };
 
     return (
@@ -85,6 +91,9 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
                     </div>
                 </nav>
             </div>
+            <Toast id='toast-message' ref={toastMessage} active={active}>
+                로그아웃 완료
+            </Toast>
         </>
     );
 });
