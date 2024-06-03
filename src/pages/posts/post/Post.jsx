@@ -70,19 +70,32 @@ function Post() {
 
     const fetchPost = async () => {
         const res = await api.get(`/posts/${post_id}`);
-        const { title, post_image, content, comments, count, created_at, creator } = res.post;
+        console.log(res.post);
+        const {
+            title,
+            post_image,
+            content,
+            comments,
+            count_like,
+            count_comment,
+            count_view,
+            creator,
+            created_at,
+            creator_avatar,
+            creator_nickname,
+        } = res.post;
         setPost({
             title,
             post_image,
             content,
             comments,
-            count_like: count.like,
-            count_comment: count.comment,
-            count_view: count.view,
+            count_like: count_like,
+            count_comment: count_comment,
+            count_view: count_view,
             created_at,
-            creator_nickname: creator.nickname,
-            creator_avatar: creator.avatar,
-            creator_id: creator.user_id,
+            creator_nickname,
+            creator_avatar,
+            creator_id: creator,
         });
     };
 
@@ -138,7 +151,6 @@ function Post() {
     // 댓글 삭제 확인 버튼 클릭
     const commentModalOkClickHandler = async () => {
         const res = await api.delete(`/posts/${post_id}/comment/${commentId}`);
-        console.log(res);
         if (res.message === 'comment deleted successfully') {
             // TOAST 출력
             setMessage('댓글 삭제 완료');
