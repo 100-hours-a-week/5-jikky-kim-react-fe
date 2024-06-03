@@ -3,6 +3,7 @@ import { useRef, useEffect, useState } from 'react';
 import api from '../../utils/api';
 import style from './WithLogin.module.css';
 import Toast from '../Toast/Toast';
+import { IMAGE_SERVER_URL } from '../../constants/res';
 
 function withLogin(component) {
     return function (props) {
@@ -28,13 +29,13 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
     };
     const profileImage = useRef();
     const insertHeaderAvatar = async () => {
-        const res = await api.get('/users/change');
+        const res = await api.get('/users/');
         if (res.status === 'fail') {
             // TODO : 세션 만료 같으 토스트 메세지 출력
             // TODO : 헤더 rerender 가 안되어서 임시처리. 리팩토링 하기
             return navigate('/login');
         }
-        profileImage.current.src = res.user.avatar;
+        profileImage.current.src = IMAGE_SERVER_URL + res.user.avatar;
     };
 
     function handleBackIconClick() {

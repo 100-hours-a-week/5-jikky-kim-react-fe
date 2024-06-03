@@ -17,6 +17,7 @@ import Modal from '../../../components/Modal/Modal';
 import CommentForm from './CommentForm';
 import Line from '../../../components/Line/Line';
 import CommentsSection from './CommentSection';
+import { IMAGE_SERVER_URL } from '../../../constants/res';
 
 function Post() {
     const navigate = useNavigate();
@@ -50,7 +51,7 @@ function Post() {
         created_at: '',
         creator_nickname: '',
         creator_avatar: '',
-        creator_id: '',
+        user_id: '',
     });
 
     // 댓글 삭제를 위한 상태
@@ -79,14 +80,14 @@ function Post() {
             count_like,
             count_comment,
             count_view,
-            creator,
+            user_id,
             created_at,
             creator_avatar,
             creator_nickname,
         } = res.post;
         setPost({
             title,
-            post_image,
+            post_image: IMAGE_SERVER_URL + post_image,
             content,
             comments,
             count_like: count_like,
@@ -94,13 +95,14 @@ function Post() {
             count_view: count_view,
             created_at,
             creator_nickname,
-            creator_avatar,
-            creator_id: creator,
+            creator_avatar: IMAGE_SERVER_URL + creator_avatar,
+            user_id,
         });
     };
 
     const fetchUser = async () => {
-        const res = await api.get('/users/change');
+        const res = await api.get('/users/');
+        console.log(res);
         setUserId(res.user.user_id);
     };
 

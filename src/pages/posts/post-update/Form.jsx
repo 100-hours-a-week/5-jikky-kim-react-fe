@@ -11,6 +11,8 @@ import Input from '../../../components/Input/Input';
 import Toast from '../../../components/Toast/Toast';
 import Line from '../../../components/Line/Line';
 
+import { IMAGE_SERVER_URL } from '../../../constants/res';
+
 import style from './Form.module.css';
 
 const Form = () => {
@@ -52,13 +54,13 @@ const Form = () => {
             title: title,
             content: content,
         });
-        preview.current.src = post_image;
+        preview.current.src = IMAGE_SERVER_URL + post_image;
         let splitSrc = post_image.split('/');
 
         fileName.current.innerHTML = splitSrc[splitSrc.length - 1];
         setExistImage({
             imageName: splitSrc[splitSrc.length - 1],
-            imageSrc: post_image,
+            imageSrc: IMAGE_SERVER_URL + post_image,
         });
     };
 

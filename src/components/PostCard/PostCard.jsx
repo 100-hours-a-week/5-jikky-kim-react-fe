@@ -3,6 +3,7 @@ import style from './PostCard.module.css';
 import { Link } from 'react-router-dom';
 import { formatCount, titleSlice, formatDate } from '../../utils/utils';
 import Line from '../Line/Line';
+import { IMAGE_SERVER_URL } from '../../constants/res';
 
 const Post = (props) => {
     const { post_id, title, created_at, creator_nickname, creator_avatar, count_like, count_comment, count_view } =
@@ -22,7 +23,7 @@ const Post = (props) => {
                     </div>
                     <Line />
                     <div className={style.post_creator}>
-                        <img className={style.avatar} alt='avatar' src={creator_avatar} />
+                        <img className={style.avatar} alt='avatar' src={IMAGE_SERVER_URL + creator_avatar} />
                         <div className={style.creator}>{creator_nickname}</div>
                     </div>
                 </div>

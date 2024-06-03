@@ -1,7 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import style from './UserUpdate.module.css';
 import api from '../../../utils/api';
 import Form from './Form';
+import { IMAGE_SERVER_URL } from '../../../constants/res';
+
 function UserUpdate() {
     const [user, setUser] = useState({
         profile: '',
@@ -11,9 +13,9 @@ function UserUpdate() {
 
     useEffect(() => {
         const getUser = async () => {
-            const response = await api.get('/users/change');
+            const response = await api.get('/users/');
             setUser({
-                profile: response.user.avatar,
+                profile: IMAGE_SERVER_URL + response.user.avatar,
                 email: response.user.email,
                 nickname: response.user.nickname,
             });
