@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import api from '../../../utils/api';
 import { activateButton, deactivateButton, updateState, handleInputChange } from '../../../utils/utils';
@@ -10,6 +9,8 @@ import Toast from '../../../components/Toast/Toast';
 import Input from '../../../components/Input/Input';
 import Button from '../../../components/Button/Button';
 import Modal from '../../../components/Modal/Modal';
+
+import { IMAGE_SERVER_URL } from '../../../constants/res';
 
 import style from './Form.module.css';
 
@@ -48,9 +49,9 @@ function Form() {
     };
 
     const getUser = async () => {
-        const response = await api.get('/users/change');
+        const response = await api.get('/users/');
         setUser({
-            profile: response.user.avatar,
+            profile: IMAGE_SERVER_URL + response.user.avatar,
             email: response.user.email,
             nickname: response.user.nickname,
         });
@@ -89,7 +90,7 @@ function Form() {
                 const response = await api.patch('/users', formData);
                 console.log(response);
                 const updatedUser = {
-                    profile: response.user.avatar,
+                    profile: IMAGE_SERVER_URL + response.user.avatar,
                     email: response.user.email,
                     nickname: response.user.nickname,
                 };

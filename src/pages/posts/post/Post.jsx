@@ -17,6 +17,7 @@ import Modal from '../../../components/Modal/Modal';
 import CommentForm from './CommentForm';
 import Line from '../../../components/Line/Line';
 import CommentsSection from './CommentSection';
+import { IMAGE_SERVER_URL } from '../../../constants/res';
 
 function Post() {
     const navigate = useNavigate();
@@ -50,7 +51,7 @@ function Post() {
         created_at: '',
         creator_nickname: '',
         creator_avatar: '',
-        creator_id: '',
+        user_id: '',
     });
 
     // 댓글 삭제를 위한 상태
@@ -70,24 +71,38 @@ function Post() {
 
     const fetchPost = async () => {
         const res = await api.get(`/posts/${post_id}`);
-        const { title, post_image, content, comments, count, created_at, creator } = res.post;
-        setPost({
+        console.log(res.post);
+        const {
             title,
             post_image,
             content,
             comments,
-            count_like: count.like,
-            count_comment: count.comment,
-            count_view: count.view,
+            count_like,
+            count_comment,
+            count_view,
+            user_id,
             created_at,
-            creator_nickname: creator.nickname,
-            creator_avatar: creator.avatar,
-            creator_id: creator.user_id,
+            creator_avatar,
+            creator_nickname,
+        } = res.post;
+        setPost({
+            title,
+            post_image: IMAGE_SERVER_URL + post_image,
+            content,
+            comments,
+            count_like: count_like,
+            count_comment: count_comment,
+            count_view: count_view,
+            created_at,
+            creator_nickname,
+            creator_avatar: IMAGE_SERVER_URL + creator_avatar,
+            user_id,
         });
     };
 
     const fetchUser = async () => {
-        const res = await api.get('/users/change');
+        const res = await api.get('/users/');
+        console.log(res);
         setUserId(res.user.user_id);
     };
 
@@ -138,7 +153,6 @@ function Post() {
     // 댓글 삭제 확인 버튼 클릭
     const commentModalOkClickHandler = async () => {
         const res = await api.delete(`/posts/${post_id}/comment/${commentId}`);
-        console.log(res);
         if (res.message === 'comment deleted successfully') {
             // TOAST 출력
             setMessage('댓글 삭제 완료');

@@ -2,6 +2,7 @@
 .post {
     background-color: white;
     border-radius: 8px;
+    margin-bottom: 20px;
 }
 .post_title {
     text-align: left;
@@ -16,6 +17,7 @@
     justify-content: space-between;
     font-size: 14px;
     margin: 16px;
+    padding-bottom: 20px;
 }
 .post_mid_l {
     display: flex;
@@ -37,7 +39,7 @@
 }
 
 .creator {
-    font-weight: 700px;
+    font-weight: 700;
     font-size: 15px;
 }
 
@@ -45,4 +47,22 @@
     width: 36px;
     height: 36px;
     border-radius: 100%;
+}
+
+.thumbnail_img {
+    width: 592px;
+    height: 306px;
+}
+
+/* 반응형 스타일링 */
+@media (max-width: 592px) {
+    .post {
+        width: 100%; /* 가로 너비를 화면 너비에 맞게 줄임 */
+        margin-bottom: 10px; /* 간격 조절 */
+    }
+
+    .thumbnail_img {
+        width: 100%; /* 가로 너비를 화면 너비에 맞게 줄임 */
+        height: auto; /* 높이는 비율에 맞게 조절 */
+    }
 }

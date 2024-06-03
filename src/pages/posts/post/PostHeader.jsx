@@ -13,7 +13,7 @@ const PostHeader = ({ post, userId, updatePostButtonClickHandler, deletePostButt
                 {post.created_at}
             </div>
         </div>
-        {userId === post.creator_id && (
+        {userId === post.user_id && (
             <ControlButton
                 updateButtonClickHandler={updatePostButtonClickHandler}
                 deleteButtonClickHandler={deletePostButtonClickHandler}
