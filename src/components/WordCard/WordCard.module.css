@@ -1,0 +1,25 @@
+/* 게시글 */
+.post {
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: var(--main-bg-color);
+    padding: 10px;
+}
+.post_title {
+    text-align: left;
+    font-weight: 700;
+    font-size: 24px;
+    margin-left: 16px;
+}
+.post_content {
+    display: flex;
+    margin-left: 16px;
+}
+/* 반응형 스타일링 */
+@media (max-width: 592px) {
+    .post {
+        width: 100%; /* 가로 너비를 화면 너비에 맞게 줄임 */
+        margin-bottom: 10px; /* 간격 조절 */
+    }
+}
