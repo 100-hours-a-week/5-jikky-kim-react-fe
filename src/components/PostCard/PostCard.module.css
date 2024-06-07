@@ -3,13 +3,13 @@
     background-color: white;
     border-radius: 8px;
     margin-bottom: 20px;
+    color: var(--main-bg-color);
 }
 .post_title {
     text-align: left;
     font-weight: 700;
     font-size: 24px;
     margin: 16px;
-    padding-top: 16px;
 }
 
 .post_mid {

@@ -154,7 +154,11 @@
 .comment_item_button {
     font-size: 15px;
     border: 1px solid var(--color-secondary);
-    background-color: white;
+    background-color: var(--color-secondary);
+    color: var(--main-text-color);
     border-radius: 8px;
     padding: 2px 8px;
+}
+.comment_item_button:hover {
+    background-color: var(--color-active);
 }

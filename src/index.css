@@ -2,9 +2,11 @@
     --input-width: 355px;
     --input-height: 33px;
     --main-width: 592px;
-    --color-primary: #d9d9d9;
-    --color-secondary: #aca0eb;
-    --color-active: #7f6aee;
+    --main-bg-color: #1b181e;
+    --main-text-color: white;
+    --color-primary: #5ddee2;
+    --color-secondary: #91eef1;
+    --color-active: #5ddee2;
     --line-height: 21.15px;
 }
 
@@ -22,7 +24,8 @@ html::-webkit-scrollbar {
 body {
     margin: 0;
     padding: 0;
-    background-color: #f4f5f7;
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
     text-align: center;
     font-family: 'Pretendard-Regular', sans-serif;
 }
@@ -37,7 +40,7 @@ body {
 
 .helper-text {
     text-align: left;
-    color: red;
+    color: var(--color-active);
     font-size: 12px;
     width: var(--input-width);
 }
@@ -57,7 +60,7 @@ body {
 
 a {
     text-decoration: none;
-    color: black;
+    color: var(--main-text-color);
 }
 
 form {

@@ -1,6 +1,6 @@
 .button {
     margin-top: 16px;
-    background-color: #aca0eb;
+    background-color: var(--color-secondary);
     color: white;
     height: var(--input-height);
     font-size: 14px;

@@ -7,6 +7,7 @@ import Login from './pages/login';
 import Register from './pages/register';
 import User from './pages/user';
 import Posts from './pages/posts';
+import Words from './pages/words';
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                     <Route path='/register' element={<Register />} />
                     <Route path='/user/*' element={<User />} />
                     <Route path='/posts/*' element={<Posts />} />
+                    <Route path='/words/*' element={<Words />} />
                 </Routes>
             </Router>
         </>

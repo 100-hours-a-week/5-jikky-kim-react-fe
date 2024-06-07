@@ -3,7 +3,7 @@ import PostCard from '../../components/PostCard/PostCard';
 import api from '../../utils/api';
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import Info from './Info';
+import Info from '../../components/Info/Info';
 import Toast from '../../components/Toast/Toast';
 import Loading from '../../components/Loading/Loading';
 
@@ -84,7 +84,11 @@ const Posts = () => {
     return (
         <div id='posts' className={style.posts}>
             <div id='post-wrapper' className={style.post_wrapper}>
-                <Info />
+                <Info>
+                    안녕하세요,
+                    <br />
+                    Dev Word <strong>게시판</strong> 입니다.
+                </Info>
                 <div id='btn-wrapper' className={style.btn_wrapper}>
                     <Link to='/posts/create'>
                         <button id='go-upload' className={style.go_upload}>

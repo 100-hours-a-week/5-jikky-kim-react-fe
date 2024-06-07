@@ -26,14 +26,12 @@
     position: fixed;
     top: 50vh;
     left: 50vw;
+    color: var(--main-bg-color);
     transform: translate(-50%, -50%);
     width: 408px;
     height: 242px;
-
     padding: 40px;
-
     text-align: center;
-
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
