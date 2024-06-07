@@ -8,7 +8,7 @@ function Info() {
         <div className={style.post_info}>
             <InfoText>안녕하세요,</InfoText>
             <InfoText>
-                아무 말 대잔치 <strong>게시판</strong> 입니다.
+                Dev Word <strong>게시판</strong> 입니다.
             </InfoText>
         </div>
     );

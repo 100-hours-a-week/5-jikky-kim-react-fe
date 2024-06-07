@@ -4,13 +4,14 @@ import api from '../../utils/api';
 import style from './WithLogin.module.css';
 import Toast from '../Toast/Toast';
 import { IMAGE_SERVER_URL } from '../../constants/res';
+import { userIcon } from '../../assets/icons';
 
 function withLogin(component) {
     return function (props) {
         if (props.isLoggedIn) {
             return component(props);
         }
-        return <div className={style.header_text}>아무 말 대잔치</div>;
+        return <div className={style.header_text}>Dev Word</div>;
     };
 }
 
@@ -76,11 +77,20 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
         <>
             <div className={`${style.header_profile} ${style.none} ${style.back}`} ref={back}></div>
             <div id='header-text' className={style.header_text} onClick={navigateToHome}>
-                아무 말 대잔치
+                Dev Word
             </div>
             <div className={style.dropdown}>
-                <img alt='user-avatar' ref={profileImage} id='profile-btn' className={style.header_profile} />
+                <img
+                    alt='user-avatar'
+                    src={userIcon}
+                    ref={profileImage}
+                    id='profile-btn'
+                    className={style.header_profile}
+                />
                 <nav id='user-nav' className={style.dropdown_content}>
+                    <Link className={style.user_nav_item} to='/words'>
+                        발음 검색
+                    </Link>
                     <Link className={style.user_nav_item} to='/user/update'>
                         회원정보 수정
                     </Link>
