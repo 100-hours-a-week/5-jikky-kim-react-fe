@@ -53,12 +53,9 @@ function Post() {
         creator_avatar: '',
         user_id: '',
     });
+    const [comments, setComments] = useState([]);
 
-    // 댓글 삭제를 위한 상태
     const [commentId, setCommentId] = useState('');
-    // const [commentInput, setCommentInput] = useState({
-    //     comment: '',
-    // });
     const [commentInput, setCommentInput] = useState('');
     const [isCreateMode, setIsCreateMode] = useState(true);
 
@@ -76,7 +73,6 @@ function Post() {
             title,
             post_image,
             content,
-            comments,
             count_like,
             count_comment,
             count_view,
@@ -89,7 +85,6 @@ function Post() {
             title,
             post_image: IMAGE_SERVER_URL + post_image,
             content,
-            comments,
             count_like: count_like,
             count_comment: count_comment,
             count_view: count_view,
@@ -104,6 +99,12 @@ function Post() {
         const res = await api.get('/users/');
         console.log(res);
         setUserId(res.user.user_id);
+    };
+
+    const fetchComments = async () => {
+        const res = await api.get(`/posts/${post_id}/comments`);
+        console.log(res);
+        setComments(res.comments);
     };
 
     // 게시글 수정 버튼 클릭
@@ -160,7 +161,7 @@ function Post() {
             setTimeout(function () {
                 closeModal(commentModalRefs.modal, commentModalRefs.overlay);
                 setActive('toast');
-                return fetchPost();
+                return fetchComments();
             }, 1000);
         }
     };
@@ -181,8 +182,7 @@ function Post() {
             setActive('toast-active');
             setTimeout(function () {
                 setActive('toast');
-                // TODO : 댓글만 다시 불러오게 최적화
-                return fetchPost();
+                return fetchComments();
             }, 1000);
         }
     };
@@ -200,14 +200,14 @@ function Post() {
             setIsCreateMode(true);
             setTimeout(function () {
                 setActive('toast');
-                // TODO : 댓글만 다시 불러오게 최적화
-                return fetchPost();
+                return fetchComments();
             }, 1000);
         }
     };
 
     useEffect(() => {
         fetchPost();
+        fetchComments();
         fetchUser();
     }, []);
 
@@ -252,7 +252,7 @@ function Post() {
                         />
                     )}
                     <CommentsSection
-                        post={post}
+                        comments={comments}
                         userId={userId}
                         updateCommentButtonClickHandler={updateCommentButtonClickHandler}
                         deleteCommentButtonClickHandler={deleteCommentButtonClickHandler}
