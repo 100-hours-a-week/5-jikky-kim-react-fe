@@ -12,21 +12,24 @@
 
 -   ver3 : `react` `spring` `mySQL`
     -   개발 진행 중
--   ver3 : `react` `spring` `mySQL`
-    -   현재 개발 중
 
 # 커뮤니티 게시판 ver 2 FE
 
 ## 프로젝트 기간
 
--   ver 2 FE : 2024.05.02 ~ 2024.05.15 & ( 9영업일 )
+-   ver 2 FE : 2024.05.02 ~ 2024.05.15 & 2024.06.03~2024.06.08 ( 12영업일 )
 
 ## 사용 기술
 
 `Express` `html/css` `javascript` `React` `mySQL`
 
+## 시연 영상
+
+https://github.com/100-hours-a-week/5-jikky-kim-react-fe/assets/59151187/6a78967d-4bb8-4ebd-920d-f7e8b4000ff8
+
 ## 개발 내용
 
+-   개발 용어 한국어 발음 검색 기능
 -   무한 스크롤 구현
 -   로딩, 토스트 메세지 구현
 -   `preload` 방식의 font import로 지연 시간 없이 웹폰트 서빙
@@ -200,7 +203,7 @@ class CustomHttpError extends Error {
 }
 ```
 
-## 폴더 구조
+## 프로젝트 구조
 
 ```bash
 project-root/
@@ -214,11 +217,13 @@ project-root/
 │   │   ├── Button/
 │   │   ├── Header/
 │   │   ├── Input/
+│   │   ├── Info/
 │   │   ├── Line/
 │   │   ├── Loading/
 │   │   ├── Modal/
 │   │   ├── PostCard/
 │   │   ├── Toast/
+│   │   ├── WordCard/
 │   │
 │   ├── constants/
 │   │
@@ -227,6 +232,7 @@ project-root/
 │   │   ├── posts/
 │   │   ├── register/
 │   │   ├── user/
+│   │   ├── words/
 │   │
 │   ├── utils/
 │   │
@@ -242,10 +248,6 @@ project-root/
 └── README.md
 
 ```
-
-## 구현 결과
-
-https://github.com/jjikky/5-jikky-kim-react-fe/assets/59151187/4025723e-d0b3-4802-b51b-adbff7b19216
 
 ## 회고 및 개발 일지
 
