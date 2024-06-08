@@ -4,9 +4,9 @@ import style from './Post.module.css';
 import { formatDate } from '../../../utils/utils';
 import { IMAGE_SERVER_URL } from '../../../constants/res';
 
-const CommentsSection = ({ post, userId, updateCommentButtonClickHandler, deleteCommentButtonClickHandler }) => (
+const CommentsSection = ({ comments, userId, updateCommentButtonClickHandler, deleteCommentButtonClickHandler }) => (
     <div className={style.comment_wrap}>
-        {post.comments?.map((comment) => (
+        {comments?.map((comment) => (
             <div className={style.comments} key={comment.comment_id}>
                 <div className={style.comment_box}>
                     <div className={style.comment_item}>
