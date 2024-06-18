@@ -1,7 +1,9 @@
 const SERVER_URL = 'http://localhost:5000';
-const ErrorMessage = '../constants/error-message';
+const ErrorMessage = require('../constants/error-message');
 
 export const apiHeaders = new Headers();
+const token = localStorage.getItem('token');
+if (token) apiHeaders.set('Authorization', `Bearer ${token}`);
 
 const api = {
     get: async (path, params, options) => {

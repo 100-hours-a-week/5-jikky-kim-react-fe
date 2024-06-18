@@ -39,6 +39,13 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
         profileImage.current.src = IMAGE_SERVER_URL + res.user.avatar;
     };
 
+    const isTokenExist = () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+        }
+    };
+
     function handleBackIconClick() {
         // TODO : 뒤로가기 예외처리
         navigate(-1);
@@ -46,7 +53,7 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
 
     useEffect(() => {
         insertHeaderAvatar();
-
+        isTokenExist();
         // 뒤로가기 버튼
         if (!NonBackIconPath.includes(location.pathname)) {
             back.current.style.visibility = 'visible';
@@ -63,6 +70,8 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
 
     const handleLogout = async () => {
         const response = await api.get('/users/logout');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user_id');
         console.log(response);
         setActive('toast-active');
         setTimeout(function () {
