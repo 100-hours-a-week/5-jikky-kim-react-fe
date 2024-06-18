@@ -49,18 +49,18 @@ const Form = () => {
 
     const fetchPost = async () => {
         const response = await api.get(`/posts/${post_id}`);
-        const { title, content, post_image } = response.post;
+        const { title, content, postImage } = response.post;
         setPost({
             title: title,
             content: content,
         });
-        preview.current.src = IMAGE_SERVER_URL + post_image;
-        let splitSrc = post_image.split('/');
+        preview.current.src = IMAGE_SERVER_URL + postImage;
+        let splitSrc = postImage.split('/');
 
         fileName.current.innerHTML = splitSrc[splitSrc.length - 1];
         setExistImage({
             imageName: splitSrc[splitSrc.length - 1],
-            imageSrc: IMAGE_SERVER_URL + post_image,
+            imageSrc: IMAGE_SERVER_URL + postImage,
         });
     };
 
