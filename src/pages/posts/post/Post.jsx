@@ -42,16 +42,16 @@ function Post() {
     const [message, setMessage] = useState('');
     const [post, setPost] = useState({
         title: '',
-        post_image: '',
+        postImage: '',
         content: '',
         comments: [],
-        count_like: '',
-        count_comment: '',
-        count_view: '',
-        created_at: '',
-        creator_nickname: '',
-        creator_avatar: '',
-        user_id: '',
+        countLike: '',
+        countComment: '',
+        countView: '',
+        createdAt: '',
+        creatorNickname: '',
+        creatorAvatar: '',
+        userId: '',
     });
     const [comments, setComments] = useState([]);
 
@@ -71,27 +71,27 @@ function Post() {
         console.log(res.post);
         const {
             title,
-            post_image,
+            postImage,
             content,
-            count_like,
-            count_comment,
-            count_view,
-            user_id,
+            countLike,
+            countComment,
+            countView,
+            userId,
             created_at,
-            creator_avatar,
-            creator_nickname,
+            creatorAvatar,
+            creatorNickname,
         } = res.post;
         setPost({
             title,
-            post_image: IMAGE_SERVER_URL + post_image,
+            postImage: IMAGE_SERVER_URL + postImage,
             content,
-            count_like: count_like,
-            count_comment: count_comment,
-            count_view: count_view,
+            countLike: countLike,
+            countComment: countComment,
+            countView: countView,
             created_at,
-            creator_nickname,
-            creator_avatar: IMAGE_SERVER_URL + creator_avatar,
-            user_id,
+            creatorNickname,
+            creatorAvatar: IMAGE_SERVER_URL + creatorAvatar,
+            userId,
         });
     };
 
