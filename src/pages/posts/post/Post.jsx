@@ -68,7 +68,6 @@ function Post() {
 
     const fetchPost = async () => {
         const res = await api.get(`/posts/${post_id}`);
-        console.log(res.post);
         const {
             title,
             postImage,
@@ -97,13 +96,11 @@ function Post() {
 
     const fetchUser = async () => {
         const res = await api.get('/users/');
-        console.log(res);
         setUserId(res.user.user_id);
     };
 
     const fetchComments = async () => {
         const res = await api.get(`/posts/${post_id}/comments`);
-        console.log(res);
         setComments(res.comments);
     };
 

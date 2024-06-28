@@ -2,12 +2,16 @@ const SERVER_URL = 'http://localhost:5000';
 const ErrorMessage = require('../constants/error-message');
 
 export const apiHeaders = new Headers();
+const setJwt = () => {
+    const token = localStorage.getItem('token');
+    if (token) apiHeaders.set('Authorization', `Bearer ${token}`);
+    else apiHeaders.delete('Authorization');
+};
 
 const api = {
     get: async (path, params, options) => {
-        const token = localStorage.getItem('token');
-        if (token) apiHeaders.set('Authorization', `Bearer ${token}`);
         try {
+            setJwt();
             if (params) {
                 const filteredParams = Object.fromEntries(
                     Object.entries(params)
@@ -32,6 +36,7 @@ const api = {
 
     post: async (path, params, options) => {
         try {
+            setJwt();
             const { body } = handleMutateRequest(params);
             const res = await fetch(`${SERVER_URL}${path}`, {
                 method: 'POST',
@@ -49,6 +54,7 @@ const api = {
 
     patch: async (path, params, options) => {
         try {
+            setJwt();
             const { body } = handleMutateRequest(params);
             const res = await fetch(`${SERVER_URL}${path}`, {
                 method: 'PATCH',
@@ -66,6 +72,7 @@ const api = {
 
     put: async (path, params, options) => {
         try {
+            setJwt();
             const { body } = handleMutateRequest(params);
             const res = await fetch(`${SERVER_URL}${path}`, {
                 method: 'PATCH',
@@ -83,6 +90,7 @@ const api = {
 
     delete: async (path, params, options) => {
         try {
+            setJwt();
             const { body } = handleMutateRequest(params);
             const res = await fetch(`${SERVER_URL}${path}`, {
                 method: 'DELETE',
