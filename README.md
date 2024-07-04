@@ -38,10 +38,10 @@ https://github.com/100-hours-a-week/5-jikky-kim-react-fe/assets/59151187/6a78967
 -   웹 콘텐츠 접근성 지침에 따른 대체 텍스트(`Alt`값) 제공, `label` 태그를 활용 하고, 웹 콘텐츠 접근성 지침을 이해하기 위해 노력
 -   디바운싱을 활용하여 불필요한 요청을 최대한 제거하여 서버 부담 감소
 
-API handling
-
+<details>
+<summary>fetch 중복 제거</summary>
+    
 ```javascript
-// utils/api.js
 
 const SERVER_URL = 'http://localhost:5000';
 const ErrorMessage = '../constants/error-message';
@@ -202,7 +202,414 @@ class CustomHttpError extends Error {
         this.status = status;
     }
 }
+
 ```
+
+
+</details>
+
+
+<details>
+<summary>커스텀 훅</summary>
+
+**useFormValidation**
+
+- 폼 입력 값의 유효성 검사를 담당하는 커스텀 훅
+    - **유효성 검사**: 이메일, 비밀번호, 닉네임의 유효성을 검사
+    - **helperText 상태 관리**: 각 입력 필드에 대한 헬퍼 텍스트를 관리
+    - **폼 유효성 검사**: 모든 입력이 유효한지 확인하고, 유효하면 버튼을 활성화하고, 그렇지 않으면 버튼을 비활성화
+    
+```javascript
+
+import { useState, useEffect } from 'react';
+import { validateEmail, validatePassword, validateNickname, validateInput } from '../utils/validate';
+import { HELPER_TEXT } from '../constants/helperText';
+import { activateButton, deactivateButton, updateState } from '../utils/utils';
+
+const useFormValidation = (user) => {
+    const [helperText, setHelperText] = useState({
+        profileHelper: HELPER_TEXT.PROFILE_EMPTY,
+        emailHelper: '',
+        passwordHelper: '',
+        passwordCheckHelper: '',
+        nicknameHelper: '',
+    });
+
+    const isValid =
+        validateEmail(user.email) &&
+        validatePassword(user.password) &&
+        validateNickname(user.nickname) === true &&
+        user.password === user.passwordCheck &&
+        user.profile;
+
+    useEffect(() => {
+        validateInput.email(user.email, updateState, setHelperText);
+        validateInput.password(user.password, updateState, setHelperText);
+        validateInput.passwordCheck(user.password, user.passwordCheck, updateState, setHelperText);
+        validateInput.nickname(user.nickname, updateState, setHelperText);
+
+        if (isValid) {
+            activateButton('register-btn');
+        } else {
+            deactivateButton('register-btn');
+        }
+    }, [user, isValid]);
+
+    return { helperText, isValid, setHelperText };
+};
+
+export default useFormValidation;
+
+
+```
+
+
+**useFileInput**
+
+- 파일 입력과 이미지 미리보기를 관리하는 커스텀 훅
+    - **파일 입력 관리**: 파일 입력을 처리하고, 선택한 파일을 미리보기로 표시합니다.
+    - **상태 업데이트**: 선택한 파일의 이름을 상태에 업데이트하고, 파일이 없을 때는 기본 상태로 되돌립니다.
+
+```jsx
+import { useRef } from 'react';
+import { updateState } from '../utils/utils';
+import { HELPER_TEXT } from '../constants/helperText';
+
+const useFileInput = (setUser, setHelperText) => {
+    const imageInput = useRef();
+    const preview = useRef();
+
+    const fileInputHandler = (event) => {
+        const file = event.target.files[0];
+        if (event.target.files && file) {
+            const reader = new FileReader();
+            reader.onload = (event) => (preview.current.src = event.target.result);
+            reader.readAsDataURL(file);
+
+            imageInput.current.style.display = 'none';
+            preview.current.style.display = 'block';
+
+            updateState('profile', file.name, setUser);
+            updateState('profileHelper', '', setHelperText);
+
+            // preview에 input click 연결
+            preview.current.addEventListener('click', function () {
+                event.target.click();
+            });
+        } else {
+            imageInput.current.style.display = 'block';
+            preview.current.style.display = 'none';
+            preview.current.src = '';
+            updateState('profile', '', setUser);
+            updateState('profileHelper', HELPER_TEXT.PROFILE_EMPTY, setHelperText);
+        }
+    };
+
+    return { imageInput, preview, fileInputHandler };
+};
+
+export default useFileInput;
+
+```
+
+**사용예시**
+
+**회원가입 form.jsx**
+
+```jsx
+import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import api from '../../utils/api';
+import useFormValidation from '../../hooks/useFormValidation';
+import useFileInput from '../../hooks/useFileInput';
+import { handleInputChange } from '../../utils/utils';
+
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
+
+import style from './Form.module.css';
+
+export const Form = (props) => {
+    const navigate = useNavigate();
+    const registerForm = useRef();
+
+    const [user, setUser] = useState({
+        profile: '',
+        email: '',
+        password: '',
+        passwordCheck: '',
+        nickname: '',
+    });
+
+    const { helperText, isValid, setHelperText } = useFormValidation(user);
+    const { imageInput, preview, fileInputHandler } = useFileInput(setUser, setHelperText);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (isValid) {
+            try {
+                const formData = new FormData(registerForm.current);
+                const response = await api.post('/users/register', formData);
+                console.log(response);
+                if (response?.message === 'user registered successfully') {
+                    alert('회원가입이 완료되었습니다.');
+                    return navigate('/login');
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    };
+
+    return (
+        <form {...props} ref={registerForm} onSubmit={handleSubmit}>
+            <div className='label'>프로필 사진</div>
+            <div className='helper-text'>{helperText.profileHelper}</div>
+            <div className='flex'>
+                <label ref={imageInput} className={style.image_input} htmlFor='profile'>
+                    <div className={style.add_icon}>+</div>
+                </label>
+            </div>
+            <div className='flex'>
+                <img id='preview' ref={preview} className={style.preview} alt='profile-preview' />
+            </div>
+            <Input
+                type='file'
+                name='avatar'
+                id='profile'
+                className={style.profile}
+                accept='image/*'
+                onChange={fileInputHandler}
+            />
+            <label htmlFor='email' className='label'>
+                <div>이메일*</div>
+                <Input
+                    name='email'
+                    type='text'
+                    placeholder='이메일을 입력하세요'
+                    onChange={(event) => handleInputChange(event, setUser)}
+                    value={user.email}
+                />
+            </label>
+            <div className='helper-text'>{helperText.emailHelper}</div>
+            <label htmlFor='password' className='label'>
+                <div>비밀번호*</div>
+                <Input
+                    name='password'
+                    type='password'
+                    placeholder='비밀번호를 입력하세요'
+                    onChange={(event) => handleInputChange(event, setUser)}
+                    value={user.password}
+                />
+            </label>
+            <div className='helper-text'>{helperText.passwordHelper}</div>
+            <label htmlFor='password2' className='label'>
+                <div>비밀번호 확인*</div>
+                <Input
+                    name='passwordCheck'
+                    type='password'
+                    placeholder='비밀번호를 입력하세요'
+                    onChange={(event) => handleInputChange(event, setUser)}
+                    value={user.passwordCheck}
+                />
+            </label>
+            <div className='helper-text'>{helperText.passwordCheckHelper}</div>
+            <label htmlFor='nickname' className='label'>
+                <div>닉네임*</div>
+                <Input
+                    name='nickname'
+                    type='text'
+                    placeholder='닉네임을 입력하세요'
+                    onChange={(event) => handleInputChange(event, setUser)}
+                    value={user.nickname}
+                />
+            </label>
+            <div className='helper-text'>{helperText.nicknameHelper}</div>
+            <Button id='register-btn' text='회원가입'></Button>
+        </form>
+    );
+};
+
+export default Form;
+
+```
+
+</details>
+
+
+
+<details>
+<summary>고차 컴포넌트로 페이지 헤더 반환</summary>
+
+**Header.jsx**
+
+```javascript
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+
+import { NOT_LOGINED_PATH } from '../../constants/path';
+
+import WithLogin from './WithLogin';
+
+import style from './Header.module.css';
+
+export default function Header() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const location = useLocation();
+
+    useEffect(() => {
+        if (NOT_LOGINED_PATH.includes(location.pathname)) {
+            return setIsLoggedIn(false);
+        }
+        setIsLoggedIn(true);
+    }, [location.pathname]);
+
+    return (
+        <header className={style.header}>
+            <div className={style.header_flex}>
+                <WithLogin isLoggedIn={isLoggedIn} />
+            </div>
+        </header>
+    );
+}
+
+```
+
+**WithLogin.jsx**
+
+```javascript
+import { useRef, useEffect, useState } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+
+import api from '../../utils/api';
+import { IMAGE_SERVER_URL } from '../../constants/res';
+import { NonBackIconPath } from '../../constants/path';
+
+import Toast from '../Toast/Toast';
+
+import style from './WithLogin.module.css';
+import { userIcon } from '../../assets/icons';
+
+function withLogin(Component) {
+    return function WithLoginComponent(props) {
+        if (props.isLoggedIn) {
+            return <Component {...props} />;
+        }
+        return <div className={style.header_text}>Dev Word</div>;
+    };
+}
+
+const WithLogin = withLogin(({ isLoggedIn }) => {
+    const toastMessage = useRef();
+    const profileImage = useRef();
+    const back = useRef();
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const [active, setActive] = useState('toast');
+
+    const navigateToHome = () => {
+        navigate('/posts');
+    };
+
+    const insertHeaderAvatar = async () => {
+        try {
+            const res = await api.get('/users/');
+            if (res.status === 'fail') {
+                return navigate('/login');
+            }
+            if (profileImage.current) {
+                profileImage.current.src = `${IMAGE_SERVER_URL}${res.user.avatar}`;
+            }
+        } catch (error) {
+            console.error('Failed to fetch user data:', error);
+        }
+    };
+
+    const handleBackIconClick = () => {
+        navigate(-1);
+    };
+
+    useEffect(() => {
+        insertHeaderAvatar();
+
+        if (!NonBackIconPath.includes(location.pathname)) {
+            if (back.current) {
+                back.current.style.visibility = 'visible';
+                back.current.innerHTML = '<';
+                back.current.addEventListener('click', handleBackIconClick);
+
+                return () => {
+                    if (back.current) {
+                        back.current.removeEventListener('click', handleBackIconClick);
+                    }
+                };
+            }
+        } else {
+            if (back.current) {
+                back.current.style.visibility = 'hidden';
+            }
+        }
+    }, [location.pathname]);
+
+    const handleLogout = async () => {
+        try {
+            await api.get('/users/logout');
+            setActive('toast-active');
+            setTimeout(() => {
+                setActive('toast');
+                navigate('/login');
+            }, 1000);
+        } catch (error) {
+            console.error('Failed to logout:', error);
+        }
+    };
+
+    return (
+        <>
+            <div className={`${style.header_profile} ${style.none} ${style.back}`} ref={back}></div>
+            <div className={style.header_text} onClick={navigateToHome}>
+                Dev Word
+            </div>
+            <div className={style.dropdown}>
+                <img
+                    alt='user-avatar'
+                    src={userIcon}
+                    ref={profileImage}
+                    id='profile-btn'
+                    className={style.header_profile}
+                />
+                <nav className={style.dropdown_content}>
+                    <Link className={style.user_nav_item} to='/words'>
+                        발음 검색
+                    </Link>
+                    <Link className={style.user_nav_item} to='/user/update'>
+                        회원정보 수정
+                    </Link>
+                    <Link className={style.user_nav_item} to='/user/password'>
+                        비밀번호 수정
+                    </Link>
+                    <div className={style.user_nav_item} id='logout-btn' onClick={handleLogout}>
+                        로그아웃
+                    </div>
+                </nav>
+            </div>
+            <Toast ref={toastMessage} active={active}>
+                로그아웃 완료
+            </Toast>
+        </>
+    );
+});
+
+export default WithLogin;
+
+```
+
+</details>
+
+
 
 ## 프로젝트 구조
 
@@ -259,3 +666,4 @@ project-root/
 -   [🔗2024-05-08 : useRef와 getElementById, 고차함수](https://github.com/jjikky/jikky-til/blob/main/May/2024-05-08.md)
 -   [🔗2024-05-03 : 클로저, useEffect](https://github.com/jjikky/jikky-til/blob/main/May/2024-05-03.md)
 -   [🔗2024-05-02 : react폴더구조, es6 실무](https://github.com/jjikky/jikky-til/blob/main/May/2024-05-02.md)
+
