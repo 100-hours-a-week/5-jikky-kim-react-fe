@@ -8,7 +8,7 @@ export default function Register() {
         <main className={style.main}>
             <div className='page-title'>회원가입</div>
             <div className='flex'>
-                <Form id='register-form' />
+                <Form />
             </div>
             <div className='go'>
                 <Link to='http://localhost:3000/login'>로그인하러 가기</Link>

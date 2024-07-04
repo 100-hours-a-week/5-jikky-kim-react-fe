@@ -44,7 +44,7 @@ export const Form = (props) => {
     };
 
     return (
-        <form {...props} ref={registerForm} onSubmit={handleSubmit}>
+        <form {...props} className={style.form} ref={registerForm} onSubmit={handleSubmit}>
             <div className='label'>프로필 사진</div>
             <div className='helper-text'>{helperText.profileHelper}</div>
             <div className='flex'>

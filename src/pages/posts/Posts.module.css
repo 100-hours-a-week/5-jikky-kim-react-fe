@@ -1,9 +1,9 @@
 .posts {
     text-align: center;
-    width: 100%;
+    width: 90%;
     display: flex;
     justify-content: center;
-    margin-bottom: 80px;
+    margin: 0 auto 80px;
 }
 
 .post_wrapper {
