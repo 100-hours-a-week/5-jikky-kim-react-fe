@@ -1,82 +1,95 @@
-import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useRef, useEffect, useState } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+
 import api from '../../utils/api';
-import style from './WithLogin.module.css';
-import Toast from '../Toast/Toast';
 import { IMAGE_SERVER_URL } from '../../constants/res';
+import { NonBackIconPath } from '../../constants/path';
+
+import Toast from '../Toast/Toast';
+
+import style from './WithLogin.module.css';
 import { userIcon } from '../../assets/icons';
 
-function withLogin(component) {
-    return function (props) {
+function withLogin(Component) {
+    return function WithLoginComponent(props) {
         if (props.isLoggedIn) {
-            return component(props);
+            return <Component {...props} />;
         }
         return <div className={style.header_text}>Dev Word</div>;
     };
 }
 
-// TODO : Internal React error: Expected static flag was missing. Please notify the React team. 경고 로그 없애기
 const WithLogin = withLogin(({ isLoggedIn }) => {
     const toastMessage = useRef();
-    const [active, setActive] = useState('toast');
-
-    const location = useLocation();
-    const NonBackIconPath = ['/login', '/register', '/posts'];
+    const profileImage = useRef();
     const back = useRef();
 
+    const location = useLocation();
     const navigate = useNavigate();
+
+    const [active, setActive] = useState('toast');
+
     const navigateToHome = () => {
         navigate('/posts');
     };
-    const profileImage = useRef();
+
     const insertHeaderAvatar = async () => {
-        const res = await api.get('/users/');
-        if (res.status === 'fail') {
-            // TODO : 세션 만료 같으 토스트 메세지 출력
-            // TODO : 헤더 rerender 가 안되어서 임시처리. 리팩토링 하기
-            return navigate('/login');
+        try {
+            const res = await api.get('/users/');
+            if (res.status === 'fail') {
+                return navigate('/login');
+            }
+            if (profileImage.current) {
+                profileImage.current.src = `${IMAGE_SERVER_URL}${res.user.avatar}`;
+            }
+        } catch (error) {
+            console.error('Failed to fetch user data:', error);
         }
-        profileImage.current.src = IMAGE_SERVER_URL + res.user.avatar;
     };
 
-    function handleBackIconClick() {
-        // TODO : 뒤로가기 예외처리
+    const handleBackIconClick = () => {
         navigate(-1);
-    }
+    };
 
     useEffect(() => {
         insertHeaderAvatar();
 
-        // 뒤로가기 버튼
         if (!NonBackIconPath.includes(location.pathname)) {
-            back.current.style.visibility = 'visible';
-            back.current.innerHTML = '<';
-            back.current.addEventListener('click', handleBackIconClick);
+            if (back.current) {
+                back.current.style.visibility = 'visible';
+                back.current.innerHTML = '<';
+                back.current.addEventListener('click', handleBackIconClick);
 
-            return () => {
-                back.current.removeEventListener('click', handleBackIconClick);
-            };
+                return () => {
+                    if (back.current) {
+                        back.current.removeEventListener('click', handleBackIconClick);
+                    }
+                };
+            }
         } else {
-            back.current.style.visibility = 'hidden';
+            if (back.current) {
+                back.current.style.visibility = 'hidden';
+            }
         }
     }, [location.pathname]);
 
     const handleLogout = async () => {
-        const response = await api.get('/users/logout');
-        console.log(response);
-        setActive('toast-active');
-        setTimeout(function () {
-            setActive('toast');
-            // TODO : 헤더 rerender 가 안되어서 임시처리. 리팩토링 하기
-            // navigate('/login');
-            window.location.href = '/login';
-        }, 1000);
+        try {
+            await api.get('/users/logout');
+            setActive('toast-active');
+            setTimeout(() => {
+                setActive('toast');
+                navigate('/login');
+            }, 1000);
+        } catch (error) {
+            console.error('Failed to logout:', error);
+        }
     };
 
     return (
         <>
             <div className={`${style.header_profile} ${style.none} ${style.back}`} ref={back}></div>
-            <div id='header-text' className={style.header_text} onClick={navigateToHome}>
+            <div className={style.header_text} onClick={navigateToHome}>
                 Dev Word
             </div>
             <div className={style.dropdown}>
@@ -87,7 +100,7 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
                     id='profile-btn'
                     className={style.header_profile}
                 />
-                <nav id='user-nav' className={style.dropdown_content}>
+                <nav className={style.dropdown_content}>
                     <Link className={style.user_nav_item} to='/words'>
                         발음 검색
                     </Link>
@@ -102,7 +115,7 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
                     </div>
                 </nav>
             </div>
-            <Toast id='toast-message' ref={toastMessage} active={active}>
+            <Toast ref={toastMessage} active={active}>
                 로그아웃 완료
             </Toast>
         </>
