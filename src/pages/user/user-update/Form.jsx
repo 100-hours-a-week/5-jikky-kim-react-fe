@@ -49,7 +49,7 @@ function Form() {
     };
 
     const getUser = async () => {
-        const response = await api.get('/users/');
+        const response = await api.get('/users');
         setUser({
             profile: IMAGE_SERVER_URL + response.user.avatar,
             email: response.user.email,

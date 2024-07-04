@@ -30,7 +30,7 @@ const WithLogin = withLogin(({ isLoggedIn }) => {
     };
     const profileImage = useRef();
     const insertHeaderAvatar = async () => {
-        const res = await api.get('/users/');
+        const res = await api.get('/users');
         if (res.status === 'fail') {
             // TODO : 세션 만료 같으 토스트 메세지 출력
             // TODO : 헤더 rerender 가 안되어서 임시처리. 리팩토링 하기

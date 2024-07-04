@@ -95,7 +95,7 @@ function Post() {
     };
 
     const fetchUser = async () => {
-        const res = await api.get('/users/');
+        const res = await api.get('/users');
         setUserId(res.user.userId);
     };
 
