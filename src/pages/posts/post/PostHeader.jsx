@@ -5,15 +5,15 @@ import style from './Post.module.css';
 const PostHeader = ({ post, userId, updatePostButtonClickHandler, deletePostButtonClickHandler }) => (
     <div className={style.post_header}>
         <div className={style.post_header_item}>
-            <img id='avatar' className={style.avatar} alt='profile' src={post.creator_avatar}></img>
+            <img id='avatar' className={style.avatar} alt='profile' src={post.creatorAvatar}></img>
             <div id='creator' className={style.creator}>
-                {post.creator_nickname}
+                {post.creatorNickname}
             </div>
             <div id='post-created-at' className={style.date}>
                 {post.created_at}
             </div>
         </div>
-        {userId === post.user_id && (
+        {userId === post.userId && (
             <ControlButton
                 updateButtonClickHandler={updatePostButtonClickHandler}
                 deleteButtonClickHandler={deletePostButtonClickHandler}

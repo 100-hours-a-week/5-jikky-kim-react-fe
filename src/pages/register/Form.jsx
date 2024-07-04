@@ -9,6 +9,7 @@ import { HELPER_TEXT } from '../../constants/helperText';
 
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
+import Toast from '../../components/Toast/Toast';
 
 import style from './Form.module.css';
 
@@ -18,6 +19,9 @@ export const Form = (props) => {
     const registerForm = useRef();
     const imageInput = useRef();
     const preview = useRef();
+    const toastMessage = useRef();
+
+    const [active, setActive] = useState('toast');
 
     // input
     const [user, setUser] = useState({
@@ -91,7 +95,11 @@ export const Form = (props) => {
                 const response = await api.post('/users/register', formData);
                 console.log(response);
                 if (response?.message === 'user registered successfully') {
-                    return navigate('/login');
+                    setActive('toast-active');
+                    setTimeout(function () {
+                        setActive('toast');
+                        navigate('/login');
+                    }, 1000);
                 }
             } catch (err) {
                 console.log(err);
@@ -171,6 +179,9 @@ export const Form = (props) => {
             </label>
             <div className='helper-text'>{helperText.nicknameHelper}</div>
             <Button id='register-btn' text='회원가입'></Button>
+            <Toast ref={toastMessage} active={active}>
+                회원가입 되었습니다.
+            </Toast>
         </form>
     );
 };

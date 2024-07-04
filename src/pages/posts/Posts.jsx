@@ -97,7 +97,7 @@ const Posts = () => {
                     </Link>
                 </div>
                 <div className='post_list'>
-                    {postList && postList.map((post) => <PostCard key={post.post_id} {...post} />)}
+                    {postList && postList.map((post) => <PostCard key={post.postId} {...post} />)}
                 </div>
                 <Loading ref={loadingDiv} />
                 <Toast id='toast-message' ref={toastMessage} active={active}>

@@ -42,16 +42,16 @@ function Post() {
     const [message, setMessage] = useState('');
     const [post, setPost] = useState({
         title: '',
-        post_image: '',
+        postImage: '',
         content: '',
         comments: [],
-        count_like: '',
-        count_comment: '',
-        count_view: '',
-        created_at: '',
-        creator_nickname: '',
-        creator_avatar: '',
-        user_id: '',
+        countLike: '',
+        countComment: '',
+        countView: '',
+        createdAt: '',
+        creatorNickname: '',
+        creatorAvatar: '',
+        userId: '',
     });
     const [comments, setComments] = useState([]);
 
@@ -64,52 +64,49 @@ function Post() {
     // TODO : 전역 상태로 리팩토링
     const [userId, setUserId] = useState('');
 
-    const post_id = location.pathname.split('/')[2];
+    const postId = location.pathname.split('/')[2];
 
     const fetchPost = async () => {
-        const res = await api.get(`/posts/${post_id}`);
-        console.log(res.post);
+        const res = await api.get(`/posts/${postId}`);
         const {
             title,
-            post_image,
+            postImage,
             content,
-            count_like,
-            count_comment,
-            count_view,
-            user_id,
+            countLike,
+            countComment,
+            countView,
+            userId,
             created_at,
-            creator_avatar,
-            creator_nickname,
+            creatorAvatar,
+            creatorNickname,
         } = res.post;
         setPost({
             title,
-            post_image: IMAGE_SERVER_URL + post_image,
+            postImage: IMAGE_SERVER_URL + postImage,
             content,
-            count_like: count_like,
-            count_comment: count_comment,
-            count_view: count_view,
+            countLike: countLike,
+            countComment: countComment,
+            countView: countView,
             created_at,
-            creator_nickname,
-            creator_avatar: IMAGE_SERVER_URL + creator_avatar,
-            user_id,
+            creatorNickname,
+            creatorAvatar: IMAGE_SERVER_URL + creatorAvatar,
+            userId,
         });
     };
 
     const fetchUser = async () => {
         const res = await api.get('/users/');
-        console.log(res);
-        setUserId(res.user.user_id);
+        setUserId(res.user.userId);
     };
 
     const fetchComments = async () => {
-        const res = await api.get(`/posts/${post_id}/comments`);
-        console.log(res);
+        const res = await api.get(`/posts/${postId}/comments`);
         setComments(res.comments);
     };
 
     // 게시글 수정 버튼 클릭
     const updatePostButtonClickHandler = () => {
-        navigate(`/posts/${post_id}/update`);
+        navigate(`/posts/${postId}/update`);
     };
 
     // 게시글 삭제 버튼 클릭
@@ -132,7 +129,7 @@ function Post() {
 
     // 게시물 삭제 확인 버튼 클릭
     const postModalOkClickHandler = async () => {
-        const res = await api.delete(`/posts/${post_id}`);
+        const res = await api.delete(`/posts/${postId}`);
         console.log(res);
         if (res.message === 'post deleted successfully') {
             // TOAST 출력
@@ -153,7 +150,7 @@ function Post() {
 
     // 댓글 삭제 확인 버튼 클릭
     const commentModalOkClickHandler = async () => {
-        const res = await api.delete(`/posts/${post_id}/comment/${commentId}`);
+        const res = await api.delete(`/posts/${postId}/comment/${commentId}`);
         if (res.message === 'comment deleted successfully') {
             // TOAST 출력
             setMessage('댓글 삭제 완료');
@@ -174,7 +171,7 @@ function Post() {
     // 댓글 등록 버튼 클릭
     const createCommentHandler = async (event) => {
         event.preventDefault();
-        const res = await api.post(`/posts/${post_id}/comment`, { comment: commentInput });
+        const res = await api.post(`/posts/${postId}/comment`, { comment: commentInput });
         console.log(res);
         setCommentInput('');
         if (res.message === 'comment created successfully') {
@@ -190,7 +187,7 @@ function Post() {
     // 댓글 수정 버튼 (입력폼에 있는) 클릭
     const updateCommentHandler = async (event) => {
         event.preventDefault();
-        const res = await api.patch(`/posts/${post_id}/comment/${commentId}`, { comment: commentInput });
+        const res = await api.patch(`/posts/${postId}/comment/${commentId}`, { comment: commentInput });
         console.log(res);
         setCommentInput('');
         commentRefs.commentBtn.current.innerHTML = '댓글 등록';

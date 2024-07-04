@@ -51,6 +51,10 @@ export default function Login() {
             const response = await api.post('/users/login', data);
             console.log(response);
             if (response?.message === 'login success') {
+                const token = response.token;
+                const user_id = response.user_id;
+                localStorage.setItem('token', token);
+                localStorage.setItem('user_id', user_id);
                 return navigate('/posts');
             }
             alert('아이디 또는 비밀번호가 잘못되었습니다.');
