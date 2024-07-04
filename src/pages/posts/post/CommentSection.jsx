@@ -18,12 +18,12 @@ const CommentsSection = ({ comments, userId, updateCommentButtonClickHandler, de
                     </div>
                     <div className={style.comment_content}>{comment.content}</div>
                 </div>
-                {userId === comment.user_id && (
+                {userId === comment.userId && (
                     <ControlButton
                         updateButtonClickHandler={() =>
                             updateCommentButtonClickHandler(comment.content, comment.commentId)
                         }
-                        deleteButtonClickHandler={() => deleteCommentButtonClickHandler(comment.comment_id)}
+                        deleteButtonClickHandler={() => deleteCommentButtonClickHandler(comment.commentId)}
                     />
                 )}
             </div>
